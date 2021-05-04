@@ -2,15 +2,46 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Group;
+use App\Entity\Trick;
+use Faker\Factory;
+use Cocur\Slugify\Slugify;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
+    public function __construct()
+    {
+        $this->slugger = new Slugify();
+    }
+
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        $faker = Factory::create();
+
+        $groupNames = ['straight air', 'grab', 'spin', 'flips and inverted rotations', 'inverted hand plants', 'slide', 'stall', 'tweaks and variations', 'other'];
+        foreach ($groupNames as $name) {
+            $group = new Group;
+            $group
+                ->setName(ucfirst($name))
+                ->setSlug($this->slugger->slugify($group->getName()));
+
+            $manager->persist($group);
+
+            for ($t = 0; $t < mt_rand(0, 4); $t++) {
+                $trick = new Trick;
+                $trick
+                    ->setName(ucfirst($faker->words(mt_rand(1, 3), true)))
+                    ->setSlug($this->slugger->slugify($trick->getName()))
+                    ->setDescription($faker->paragraph(mt_rand(3, 6)))
+                    ->setTrickGroup($group)
+                    ->setCreatedAt($faker->dateTimeBetween('-2 weeks'))
+                    ->setUpdatedAt($trick->getCreatedAt());
+
+                $manager->persist($trick);
+            }
+        };
 
         $manager->flush();
     }
