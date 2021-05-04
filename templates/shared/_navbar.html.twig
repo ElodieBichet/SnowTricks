@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top py-1">
-	<a class="navbar-brand py-0" href="#"><img src="{{ asset('img/SnowTricks_logo.png') }}" alt="SnowTricks logo" style="height:3.8rem;"></a>
+	<a class="navbar-brand py-0" href="{{ path('homepage') }}"><img src="{{ asset('img/SnowTricks_logo.png') }}" alt="SnowTricks logo" style="height:3.8rem;"></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -11,15 +11,8 @@
 					<span class="sr-only">(current)</span>
 				</a>
 			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tricks</a>
-				<div class="dropdown-menu">
-					<a class="dropdown-item" href="#">Group #1</a>
-					<a class="dropdown-item" href="#">Group #2</a>
-					<a class="dropdown-item" href="#">Group #3</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">All</a>
-				</div>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('homepage') }}#main-content">Tricks</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#">Sign in</a>
