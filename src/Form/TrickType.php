@@ -17,7 +17,7 @@ class TrickType extends AbstractType
             ->add('createdAt')
             ->add('updatedAt')
             ->add('slug')
-            ->add('trickGroup')
+            // ->add('trickGroup')
         ;
     }
 
