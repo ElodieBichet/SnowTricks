@@ -20,4 +20,8 @@
 			{% include "trick/_card.html.twig" %}
 		{% endfor %}
 	</div>
+	{# display navigation #}
+	<div class="navigation">
+		{{ knp_pagination_render(tricks, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+	</div>
 {% endblock %}
