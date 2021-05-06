@@ -9,8 +9,21 @@
 {% block body %}
 	<div>
 		<div class="position-relative">
-			<div style="height:20rem; max-height: 50vw; background: url({{ asset('img/victor-rodvang-kIavtjR0sZY-unsplash.jpg') }}) no-repeat center center; background-size: cover; opacity: .6;"></div>
-			<h1 class="h1 position-absolute text-center" style="transform: translate(-50%, -50%);top: 50%;left: 50%; text-shadow: #FFF 2px 0 10px;">
+			<div style="height:25rem; max-height: 50vw; background: url({{ asset('img/victor-rodvang-kIavtjR0sZY-unsplash.jpg') }}) no-repeat center center; background-size: cover; opacity: .6;">
+				<div class="d-flex align-items-start">
+					<a href="{{ path('homepage') }}#main-content" class="btn btn-secondary btn-sm m-1 text-nowrap">
+						<i class="fas fa-arrow-left"></i>
+						<span class="d-none d-sm-inline">back</span>
+						<span class="d-none d-md-inline">to list</span>
+					</a>
+					<span class="flex-grow-1"></span>
+					<a class="btn btn-primary mr-1 mt-1" href="{{ path('trick_edit', {'id': trick.id}) }}" title="Edit this trick">
+						<i class="fas fa-pencil-alt"></i>
+					</a>
+					{{ include('trick/_delete_form.html.twig') }}
+				</div>
+			</div>
+			<h1 class="h2 position-absolute text-center w-100 p-2" style="transform: translate(-50%, -50%);top: 50%;left: 50%; text-shadow: #FFF 2px 0 10px;">
 				{{ trick.name }}
 			</h1>
 		</div>
@@ -41,9 +54,5 @@
 		</div>
 	</div>
 
-	<a href="{{ path('homepage') }}#main-content">back to list</a>
 
-	<a href="{{ path('trick_edit', {'id': trick.id}) }}">edit</a>
-
-	{{ include('trick/_delete_form.html.twig') }}
 {% endblock %}
