@@ -29,16 +29,19 @@ class AppFixtures extends Fixture
 
             $manager->persist($group);
 
-            for ($t = 0; $t < mt_rand(0, 4); $t++) {
+            for ($t = 0; $t < mt_rand(0, 5); $t++) {
                 $trick = new Trick;
                 $trick
                     ->setName(ucfirst($faker->words(mt_rand(1, 3), true)))
                     ->setSlug($this->slugger->slugify($trick->getName()))
-                    ->setDescription($faker->paragraph(mt_rand(3, 6)))
+                    ->setDescription($faker->paragraphs(mt_rand(1, 3), true))
                     ->setTrickGroup($group)
                     ->setCreatedAt($faker->dateTimeBetween('-2 weeks'))
                     ->setUpdatedAt($trick->getCreatedAt());
-
+                $random = mt_rand(0, 3);
+                if ($random >= 1) {
+                    $trick->setUpdatedAt($faker->dateTimeBetween($trick->getUpdatedAt()));
+                }
                 $manager->persist($trick);
             }
         };
