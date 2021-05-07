@@ -1,0 +1,15 @@
+
+{% for trick in tricks %}
+  {% include "trick/_card.html.twig" %}
+{% endfor %}
+
+<script>
+  $(document).ready(function(){   
+    {% if isLastPage == false %}
+      $("#loadmore").attr('href', "{{ path('trick_page', {page: tricks.getCurrentPageNumber+1}) }}");
+    {% else %}
+      $('#loadmore').remove();
+    {% endif %}
+  });
+</script>
+

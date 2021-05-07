@@ -5,20 +5,60 @@ namespace App\Controller;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Bundle\PaginatorBundle\DependencyInjection\Compiler\PaginatorConfigurationPass;
+use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TrickController extends AbstractController
 {
+    protected $paginator;
+
+    protected $trickRepository;
+
+    public function __construct(TrickRepository $trickRepository, PaginatorInterface $paginator)
+    {
+        $this->paginator = $paginator;
+        $this->trickRepository = $trickRepository;
+    }
+
     /**
-     * @Route("/trick/all", name="trick_index", methods={"GET"})
+     * @Route("/tricks/all", name="trick_index", methods={"GET"})
      */
-    public function index(TrickRepository $trickRepository): Response
+    public function index(): Response
     {
         return $this->render('trick/index.html.twig', [
-            'tricks' => $trickRepository->findAll(),
+            'tricks' => $this->trickRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/tricks/page/{page<\d+>}", name="trick_page", methods={"GET"})
+     */
+    public function renderPaginatedTricks(int $page = 1, int $limit = 12)
+    {
+        $data = $this->trickRepository->findBy([], ['updatedAt' => 'DESC']);
+
+        $tricks = $this->paginator->paginate(
+            $data,
+            $page,
+            $limit
+        );
+
+        $lastPageNumber = ceil($tricks->getTotalItemCount() / $tricks->getItemNumberPerPage());
+
+        $isLastPage = false;
+
+        if ($tricks->getCurrentPageNumber() >= $lastPageNumber) {
+            $isLastPage = true;
+        }
+
+        return $this->render('trick/list.html.twig', [
+            'tricks' => $tricks,
+            'isLastPage' => $isLastPage
         ]);
     }
 
