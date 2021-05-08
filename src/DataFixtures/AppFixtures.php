@@ -29,7 +29,7 @@ class AppFixtures extends Fixture
 
             $manager->persist($group);
 
-            for ($t = 0; $t < mt_rand(0, 5); $t++) {
+            for ($t = 0; $t < mt_rand(mt_rand(0, 2), 5); $t++) {
                 $trick = new Trick;
                 $trick
                     ->setName(ucfirst($faker->words(mt_rand(1, 3), true)))
