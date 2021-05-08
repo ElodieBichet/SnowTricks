@@ -55,7 +55,6 @@ class TrickController extends AbstractController
         if ($tricks->getCurrentPageNumber() >= $lastPageNumber) {
             $isLastPage = true;
         }
-
         return $this->render('trick/list.html.twig', [
             'tricks' => $tricks,
             'isLastPage' => $isLastPage
@@ -126,6 +125,8 @@ class TrickController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('trick_index');
+        return $this->redirect(
+            $this->generateUrl('homepage') . '#main-content'
+        );
     }
 }

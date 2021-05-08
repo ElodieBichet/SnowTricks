@@ -11,6 +11,9 @@
 			<a href="#main-content" id="main-content">
 				<i class="fas fa-arrow-circle-down fa-3x"></i>
 			</a>
+			<a id="top_link" href="#main-content" class="fixed-bottom" style="bottom: 3.5rem; right: 1rem; left: auto;display:none;">
+				<i class="fas fa-arrow-circle-up fa-3x"></i>
+			</a>
 		</p>
 	</div>
 {% endblock %}
@@ -18,11 +21,11 @@
 
 	<div class="row justify-content-between">
 		{{ render(path('trick_page', {page: 1})) }}
-		<a href="#" class="btn btn-light col-12" id="loadmore"><i class="fas fa-spinner"></i> Load more tricks</a>
+		<a href="#" class="btn btn-light col-12" id="loadmore">
+			<i class="fas fa-spinner"></i>
+			Load more tricks</a>
 	</div>
-<style>
 
-</style>
 {% endblock %}
 
 {% block stylesheets %}
