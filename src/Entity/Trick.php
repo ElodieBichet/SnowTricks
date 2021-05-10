@@ -2,11 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\TrickRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TrickRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity(
+ *  fields={"name"},
+ *  message="This trick name is already used. Please choose a new name."
+ * )
  */
 class Trick
 {
@@ -18,12 +24,16 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="You must define a trick name")
+     * @Assert\Length(min=3, max=30, minMessage="The trick name must have at least 3 characters")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="You must define a trick description")
+     * @Assert\Length(min=10, minMessage="The trick description must have at least 10 characters")
      */
     private $description;
 

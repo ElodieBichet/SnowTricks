@@ -26,6 +26,6 @@
 		{% block topbanner %}{% endblock %}
 		<div class="container-md py-4 mb-5 position-relative" style="min-height:calc(100vh - 4.3rem);"> {% block body %}{% endblock %}
 			</div>
-			{% include "shared/_footer.html.twig" %}
+			{{ include('shared/_footer.html.twig') }}
 		</body>
 	</html>

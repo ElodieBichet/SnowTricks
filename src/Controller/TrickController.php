@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
+use Cocur\Slugify\Slugify;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\DependencyInjection\Compiler\PaginatorConfigurationPass;
 use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
@@ -64,18 +67,24 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/new", name="trick_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($trick);
-            $entityManager->flush();
+            $trick->setCreatedAt(new \DateTime());
+            $trick->setUpdatedAt($trick->getCreatedAt());
+            $trick->setSlug((new Slugify())->slugify($trick->getName()));
 
-            return $this->redirectToRoute('trick_index');
+            $em->persist($trick);
+            $em->flush();
+
+            return $this->redirectToRoute('trick_show', [
+                'group_slug' => $trick->getTrickGroup()->getSlug(),
+                'slug' => $trick->getSlug()
+            ]);
         }
 
         return $this->render('trick/new.html.twig', [
@@ -97,15 +106,21 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/{id<\d+>}/edit", name="trick_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Trick $trick): Response
+    public function edit(Request $request, Trick $trick, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $trick->setUpdatedAt(new \DateTime());
+            $trick->setSlug((new Slugify())->slugify($trick->getName()));
 
-            return $this->redirectToRoute('trick_index');
+            $em->flush();
+
+            return $this->redirectToRoute('trick_show', [
+                'group_slug' => $trick->getTrickGroup()->getSlug(),
+                'slug' => $trick->getSlug()
+            ]);
         }
 
         return $this->render('trick/edit.html.twig', [
