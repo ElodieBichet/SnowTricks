@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/trick")
+ */
 class TrickController extends AbstractController
 {
     protected $paginator;
@@ -29,7 +32,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/all", name="trick_index", methods={"GET"})
+     * @Route("/all", name="trick_index", methods={"GET"})
      */
     public function index(): Response
     {
@@ -39,7 +42,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/page/{page<\d+>}", name="trick_page", methods={"GET"})
+     * @Route("/page/{page<\d+>}", name="trick_page", methods={"GET"})
      */
     public function renderPaginatedTricks(int $page = 1, int $limit = 12)
     {
@@ -65,7 +68,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/new", name="trick_new", methods={"GET","POST"})
+     * @Route("/new", name="trick_new", methods={"GET","POST"})
      */
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -94,7 +97,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/{group_slug}/trick/{slug}", name="trick_show", methods={"GET"})
+     * @Route("/{group_slug}/{slug}", name="trick_show", methods={"GET"}, priority=-1)
      */
     public function show(Trick $trick): Response
     {
@@ -104,7 +107,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/{id<\d+>}/edit", name="trick_edit", methods={"GET","POST"})
+     * @Route("/{id<\d+>}/edit", name="trick_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Trick $trick, EntityManagerInterface $em): Response
     {
@@ -130,7 +133,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/{id}", name="trick_delete", methods={"POST"})
+     * @Route("/{id}", name="trick_delete", methods={"POST"})
      */
     public function delete(Request $request, Trick $trick): Response
     {
