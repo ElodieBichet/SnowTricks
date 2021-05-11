@@ -1,0 +1,8 @@
+<form name="delete" method="post" action="{{ path('trick_delete', {'id': trick.id}) }}">
+	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+	<button type="button" class="btn btn-danger h-100 mr-1 mt-1" title="Delete the trick {{ trick.name }}" data-toggle="modal" data-target="#modalConfirm-{{ trick.id }}">
+		<i class="fas fa-trash-alt"></i>
+		{{ button_label|default('') }}
+	</button>
+	{% include "shared/_modal.html.twig" %}
+</form>

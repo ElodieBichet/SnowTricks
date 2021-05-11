@@ -7,15 +7,33 @@
 {% block topbanner %}
 	<div style="background: url({{ asset('img/yann-allegre-8FG9tt8qZ-8-unsplash.jpg') }}) 70% 70% no-repeat;background-size:cover;height:calc(100vh - 6.4rem);" class="d-flex align-items-center">
 		<p style="text-shadow: #FFF 2px 0 10px;" class="text-center h3 w-100">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-		<p class="position-absolute" style="bottom:2.6rem;right:1.5rem;">
-			<a href="#main-content">
+		<p class="position-absolute" style="bottom:2.6rem;right:1rem;">
+			<a href="#main-content" id="main-content">
 				<i class="fas fa-arrow-circle-down fa-3x"></i>
+			</a>
+			<a id="top_link" href="#main-content" class="fixed-bottom" style="bottom: 3.5rem; right: 1rem; left: auto;display:none;">
+				<i class="fas fa-arrow-circle-up fa-3x"></i>
 			</a>
 		</p>
 	</div>
 {% endblock %}
 {% block body %}
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, ut repellat maxime explicabo, eos dolore molestias, accusantium impedit quo illum itaque officia hic similique iure quas. Aperiam quo, ab saepe labore ex expedita accusantium optio nemo magnam. Facilis deleniti odio expedita ullam fuga quasi eveniet in similique. Facilis sit maxime dolorum sint! Suscipit nam possimus dignissimos!</p>
-	<p>Quasi hic repudiandae numquam enim earum et aperiam doloremque voluptatum architecto quibusdam reiciendis, maxime obcaecati similique accusamus quam sapiente fuga nesciunt vel distinctio excepturi. Expedita, nihil culpa. Ex sapiente, quas, aliquam ipsum, harum tenetur omnis cupiditate consequuntur consequatur fugiat quos ullam obcaecati incidunt fuga quo possimus vitae quae molestiae tempora adipisci odit recusandae expedita nostrum voluptate.</p>
-	<p>Vitae, mollitia vel aspernatur dolor aut cupiditate tempore officia delectus accusamus perferendis, repudiandae omnis fugit minima numquam impedit natus ab, tempora ut. Magni mollitia molestiae officiis pariatur reprehenderit ex facere dignissimos, iusto nemo ratione soluta dolorem, sapiente repellendus quas! Cumque minima repellendus molestiae voluptas! Itaque vitae voluptas blanditiis in soluta vero eveniet, impedit iste nihil enim.</p>
+
+	<div class="row justify-content-between">
+		{{ render(path('trick_page', {page: 1})) }}
+		<a href="#" class="btn btn-light col-12" id="loadmore">
+			<i class="fas fa-spinner"></i>
+			Load more tricks</a>
+	</div>
+
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ include('shared/_loadmore.html.twig') }}
 {% endblock %}

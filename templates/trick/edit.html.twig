@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Trick
+	{{ trick.name }}
+	-
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	{{ include('trick/_form_content.html.twig') }}
+
+	<div class="d-flex justify-content-end">
+		{{ include('trick/_delete_form.html.twig', {'button_label': 'Delete'}) }}
+		{{ include('trick/_form.html.twig', {'button_label': 'Update'}) }}
+	</div>
+
+{% endblock %}
