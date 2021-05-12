@@ -20,7 +20,7 @@
 {% block body %}
 
 	<div class="row justify-content-between">
-		{{ render(path('trick_page', {page: 1})) }}
+		{{ render(path('trick_page_with_limit', {page: 1, limit: 12})) }}
 		<a href="#" class="btn btn-light col-12" id="loadmore">
 			<i class="fas fa-spinner"></i>
 			Load more tricks</a>

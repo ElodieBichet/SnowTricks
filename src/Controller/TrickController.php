@@ -43,8 +43,9 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/page/{page<\d+>}", name="trick_page", methods={"GET"})
+     * @Route("/page/{page<\d+>}/{limit}-per-page", name="trick_page_with_limit", methods={"GET"})
      */
-    public function renderPaginatedTricks(int $page = 1, int $limit = 12)
+    public function renderPaginatedTricks(int $page = 1, int $limit = 10)
     {
         $data = $this->trickRepository->findBy([], ['updatedAt' => 'DESC']);
 
@@ -53,7 +54,6 @@ class TrickController extends AbstractController
             $page,
             $limit
         );
-
         $lastPageNumber = ceil($tricks->getTotalItemCount() / $tricks->getItemNumberPerPage());
 
         $isLastPage = false;

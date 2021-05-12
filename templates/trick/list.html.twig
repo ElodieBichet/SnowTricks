@@ -5,7 +5,7 @@
 <script>
 	$(document).ready(function () {
 {% if isLastPage == false %}
-$("#loadmore").attr('href', "{{ path('trick_page', {page: tricks.getCurrentPageNumber+1}) }}");
+$("#loadmore").attr('href', "{{ path('trick_page_with_limit', {page: tricks.getCurrentPageNumber+1, limit: tricks.getItemNumberPerPage}) }}");
 {% else %}
 $('#loadmore').remove();{% endif %}
 });
