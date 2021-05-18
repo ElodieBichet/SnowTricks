@@ -8,15 +8,14 @@
 		</title>
 		{# Run `composer require symfony/webpack-encore-bundle` and uncomment the following Encore helpers to start using Symfony UX #}
 		{% block stylesheets %}
-			<link rel="stylesheet" href="https://bootswatch.com/4/yeti/bootstrap.min.css">
+			<link rel="stylesheet" href="https://bootswatch.com/5/yeti/bootstrap.min.css">
 			<link
 			rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous"/>
 		{#{{ encore_entry_link_tags('app') }}#}
 		{% endblock %}
 
 		{% block javascripts %}
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-			<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 			{#{{ encore_entry_script_tags('app') }}#}
 		{% endblock %}
 		<script src="{{ asset('js/scrolltop.js') }}"></script>
@@ -24,8 +23,12 @@
 	<body>
 		{% include "shared/_navbar.html.twig" %}
 		{% block topbanner %}{% endblock %}
-		<div class="container-md py-4 mb-5 position-relative" style="min-height:calc(100vh - 4.3rem);"> {% block body %}{% endblock %}
-			</div>
-			{{ include('shared/_footer.html.twig') }}
-		</body>
-	</html>
+		<div class="container-md py-4 mb-5 position-relative" style="min-height:calc(100vh - 4.3rem);">
+
+			{{ include('shared/_alert.html.twig') }}
+
+			{% block body %}{% endblock %}
+		</div>
+		{{ include('shared/_footer.html.twig') }}
+	</body>
+</html>

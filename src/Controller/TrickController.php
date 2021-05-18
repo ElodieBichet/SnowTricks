@@ -54,6 +54,7 @@ class TrickController extends AbstractController
             $page,
             $limit
         );
+
         $lastPageNumber = ceil($tricks->getTotalItemCount() / $tricks->getItemNumberPerPage());
 
         $isLastPage = false;

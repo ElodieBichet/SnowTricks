@@ -18,21 +18,19 @@
 	</div>
 {% endblock %}
 {% block body %}
-
-	<div class="row justify-content-between">
-		{{ render(path('trick_page_with_limit', {page: 1, limit: 12})) }}
-		<a href="#" class="btn btn-light col-12" id="loadmore">
-			<i class="fas fa-spinner"></i>
-			Load more tricks</a>
+	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-between">
+		{{ render(path('trick_page_with_limit', {page: 1, limit: 15})) }}
+		<span class="text-center w-100">
+			<a href="#" class="btn btn-light mx-auto w-75" id="loadmore">
+				<i class="fas fa-spinner"></i>
+				Load more tricks</a>
+		</span>
 	</div>
-
 {% endblock %}
-
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/home.css') }}">
 {% endblock %}
-
 {% block javascripts %}
 	{{ parent() }}
 	{{ include('shared/_loadmore.html.twig') }}

@@ -2,11 +2,10 @@
 	{{ include('trick/_card.html.twig') }}
 {% endfor %}
 
-<script>
-	$(document).ready(function () {
 {% if isLastPage == false %}
-$("#loadmore").attr('href', "{{ path('trick_page_with_limit', {page: tricks.getCurrentPageNumber+1, limit: tricks.getItemNumberPerPage}) }}");
+	<span class="d-none">
+		{{ path('trick_page_with_limit', {page: tricks.getCurrentPageNumber+1, limit: tricks.getItemNumberPerPage}) }}
+	</span>
 {% else %}
-$('#loadmore').remove();{% endif %}
-});
-</script>
+	<span class="d-none"></span>
+{% endif %}
