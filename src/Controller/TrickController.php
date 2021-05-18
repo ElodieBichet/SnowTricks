@@ -84,6 +84,8 @@ class TrickController extends AbstractController
             $em->persist($trick);
             $em->flush();
 
+            $this->addFlash('success', 'The trick has been successfully created.');
+
             return $this->redirectToRoute('trick_show', [
                 'group_slug' => $trick->getTrickGroup()->getSlug(),
                 'slug' => $trick->getSlug()
@@ -120,6 +122,8 @@ class TrickController extends AbstractController
 
             $em->flush();
 
+            $this->addFlash('success', 'The trick has been successfully updated.');
+
             return $this->redirectToRoute('trick_show', [
                 'group_slug' => $trick->getTrickGroup()->getSlug(),
                 'slug' => $trick->getSlug()
@@ -141,6 +145,8 @@ class TrickController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trick);
             $entityManager->flush();
+
+            $this->addFlash('success', 'The trick has been successfully removed.');
         }
 
         return $this->redirect(
