@@ -2,23 +2,51 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
+use App\Entity\User;
 use App\Entity\Group;
 use App\Entity\Trick;
-use Faker\Factory;
 use Cocur\Slugify\Slugify;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
-    public function __construct()
+    protected $slugger;
+
+    protected $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->slugger = new Slugify();
+        $this->encoder = $encoder;
     }
 
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
+
+        $admin = new User;
+
+        $hash = $this->encoder->encodePassword($admin, "password");
+
+        $admin->setEmail("admin@email.com")
+            ->setPassword($hash)
+            ->setFullname("Admin")
+            ->setRoles(['ROLE_ADMIN']);
+
+        $manager->persist($admin);
+
+        for ($u = 0; $u < 9; $u++) {
+            $user = new User();
+            $hash = $this->encoder->encodePassword($user, "password");
+            $user->setEmail("user$u@email.com")
+                ->setFullname($faker->name())
+                ->setPassword($hash);
+
+            $manager->persist($user);
+        }
 
         $groupNames = ['straight air', 'grab', 'spin', 'flips and inverted rotations', 'inverted hand plants', 'slide', 'stall', 'tweaks and variations', 'other'];
         foreach ($groupNames as $name) {
@@ -29,7 +57,7 @@ class AppFixtures extends Fixture
 
             $manager->persist($group);
 
-            for ($t = 0; $t < mt_rand(mt_rand(0, 2), 5); $t++) {
+            for ($t = 0; $t < mt_rand(mt_rand(0, 2), 7); $t++) {
                 $trick = new Trick;
                 $trick
                     ->setName(ucfirst($faker->words(mt_rand(1, 3), true)))
