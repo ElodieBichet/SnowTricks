@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
 
         $hash = $this->encoder->encodePassword($admin, "password");
 
-        $admin->setEmail("admin@email.com")
+        $admin->setEmail("e_bichet@yahoo.fr")
             ->setPassword($hash)
             ->setFullname("Admin")
             ->setRoles(['ROLE_ADMIN']);
