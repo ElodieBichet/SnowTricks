@@ -6,29 +6,42 @@
 
 {% block body %}
 
-	{{ form_start(form) }}
-	<h1>
-		Log in
-	</h1>
+	<div class="text-center mx-auto py-3 px-4 border border-primary border-2 col-11 col-sm-8 col-lg-5">
 
-	{% if app.user %}
-		<div class="mb-3">
-			You are logged in as
-			{{ app.user.username }},
-			<a href="{{ path('security_logout') }}">Logout</a>
+		{{ form_start(form) }}
+		<h1 class="mb-3">
+			Log in
+		</h1>
+
+		{% if app.user %}
+			<div class="mb-3">
+				You are logged in as
+				{{ app.user.username }},
+				<a href="{{ path('security_logout') }}">Logout</a>
+			</div>
+		{% endif %}
+
+		{{ form_row(form.email, {
+			'value': last_username,
+			'attr': {'class': 'my-2'},
+			'label_attr': {'class': 'my-2 fs-6'}
+			}) }}
+
+		{{ form_row(form.password, {
+			'attr': {'class': 'my-2'},
+			'label_attr': {'class': 'my-2 fs-6'}
+		}) }}
+
+		<div class="small my-4">
+			<a href="{{ path('app_forgot_password_request') }}">Forgot password?</a>
 		</div>
-	{% endif %}
 
-	{{ form_widget(form.email, {'value': last_username}) }}
-	{{ form_row(form.password) }}
+		<button class="btn btn-lg btn-primary" type="submit">
+			Login
+		</button>
 
-	<a href="{{ path('app_forgot_password_request') }}">Forgot password?</a>
+		{{ form_end(form) }}
 
-	<button class="btn btn-lg btn-primary" type="submit">
-		Login
-	</button>
-
-	{{ form_end(form) }}
-
+	</div>
 
 {% endblock %}
