@@ -14,12 +14,18 @@
 			<li class="nav-item">
 				<a class="nav-link" href="{{ path('homepage') }}#main-content">Tricks</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{ path('security_login') }}">Sign in</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Sign up</a>
-			</li>
+			{% if app.user %}
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('security_logout') }}">Logout</a>
+				</li>
+			{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('security_login') }}">Sign in</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Sign up</a>
+				</li>
+			{% endif %}
 		</ul>
 	</div>
 </nav>
