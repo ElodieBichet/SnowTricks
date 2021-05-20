@@ -4,7 +4,7 @@
 
 {% if isLastPage == false %}
 	<span class="d-none">
-		{{ path('trick_page_with_limit', {page: tricks.getCurrentPageNumber+1, limit: tricks.getItemNumberPerPage}) }}
+		{{ path('trick_page_with_limit', {page: page+1, limit: limit}) }}
 	</span>
 {% else %}
 	<span class="d-none"></span>

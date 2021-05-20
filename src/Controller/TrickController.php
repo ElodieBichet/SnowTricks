@@ -8,9 +8,6 @@ use App\Repository\TrickRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Bundle\PaginatorBundle\DependencyInjection\Compiler\PaginatorConfigurationPass;
-use Knp\Component\Pager\Paginator;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,9 +22,8 @@ class TrickController extends AbstractController
 
     protected $trickRepository;
 
-    public function __construct(TrickRepository $trickRepository, PaginatorInterface $paginator)
+    public function __construct(TrickRepository $trickRepository)
     {
-        $this->paginator = $paginator;
         $this->trickRepository = $trickRepository;
     }
 
@@ -47,23 +43,21 @@ class TrickController extends AbstractController
      */
     public function renderPaginatedTricks(int $page = 1, int $limit = 10)
     {
-        $data = $this->trickRepository->findBy([], ['updatedAt' => 'DESC']);
+        $offset = (($page - 1) * $limit);
+        $data = $this->trickRepository->findBy([], ['updatedAt' => 'DESC'], $limit, $offset);
 
-        $tricks = $this->paginator->paginate(
-            $data,
-            $page,
-            $limit
-        );
-
-        $lastPageNumber = ceil($tricks->getTotalItemCount() / $tricks->getItemNumberPerPage());
+        $lastPageNumber = ceil(count($this->trickRepository->findAll()) / $limit);
 
         $isLastPage = false;
 
-        if ($tricks->getCurrentPageNumber() >= $lastPageNumber) {
+        if ($page >= $lastPageNumber) {
             $isLastPage = true;
         }
+        dump($lastPageNumber);
         return $this->render('trick/list.html.twig', [
-            'tricks' => $tricks,
+            'tricks' => $data,
+            'page' => $page,
+            'limit' => $limit,
             'isLastPage' => $isLastPage
         ]);
     }
