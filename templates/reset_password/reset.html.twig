@@ -5,10 +5,23 @@
 {% endblock %}
 
 {% block body %}
+
+<div class="text-center mx-auto py-3 px-4 border border-primary border-2 col-11 col-sm-8 col-lg-5">
+
 	<h1>Reset your password</h1>
 
 	{{ form_start(resetForm) }}
-	{{ form_row(resetForm.plainPassword) }}
-	<button class="btn btn-primary">Reset password</button>
+	{{ form_row(resetForm.plainPassword.first, {
+		'attr': {'class': 'my-2'},
+		'label_attr': {'class': 'my-2 fs-6'}
+    }) }}
+	{{ form_row(resetForm.plainPassword.second, {
+		'attr': {'class': 'my-2'},
+		'label_attr': {'class': 'my-2 fs-6'}
+    }) }}
+	<button class="btn btn-lg btn-primary mt-4">Reset password</button>
 	{{ form_end(resetForm) }}
+
+</div>
+
 {% endblock %}

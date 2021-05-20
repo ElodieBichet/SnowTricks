@@ -6,17 +6,24 @@
 
 {% block body %}
 
+<div class="text-center mx-auto py-3 px-4 border border-primary border-2 col-11 col-sm-8 col-lg-5">
+
 	<h1>Reset your password</h1>
 
 	{{ form_start(requestForm) }}
-	{{ form_row(requestForm.email) }}
+	{{ form_row(requestForm.email, {
+    'attr': {'class': 'my-2'},
+		'label_attr': {'class': 'my-2 fs-6'}
+    }) }}
 	<div>
 		<small>
-			Enter your email address and we we will send you a
-						                link to reset your password.
+			Enter your email address and we will send you a link to reset your password.
 		</small>
 	</div>
 
-	<button class="btn btn-primary">Send password reset email</button>
+	<button class="btn btn-lg btn-primary mt-4">Send password reset email</button>
 	{{ form_end(requestForm) }}
+
+</div>
+
 {% endblock %}

@@ -7,7 +7,7 @@
 {% block body %}
 	<p>
 		An email has been sent that contains a link that you can click to reset your password.
-		        This link will expire in
+		This link will expire in
 		{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
 	</p>
 	<p>If you don't receive an email please check your spam folder or
