@@ -1,0 +1,4 @@
+/* Fix some issues due to deprecated bootstrap 4 classes in forms */
+.badge-danger {
+  background-color: #f04124 !important;
+}

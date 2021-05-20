@@ -4,30 +4,28 @@
 {% endblock %}
 
 {% block body %}
-	{# {% for flashError in app.flashes('verify_email_error') %}
-														    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-														{% endfor %} #}
+
 	<div class="text-center mx-auto py-3 px-4 border border-primary border-2 col-11 col-sm-8 col-lg-5">
 
 		{{ form_start(registrationForm) }}
 		<h1 class="mb-3">Register</h1>
 		{{ form_row(registrationForm.fullname, {
-            'attr': {'class': 'my-2'},
+      'attr': {'class': 'my-2'},
 			'label_attr': {'class': 'my-2 fs-6'}
-        }) }}
+    	}) }}
 		{{ form_row(registrationForm.email, {
-            'attr': {'class': 'my-2'},
+      'attr': {'class': 'my-2'},
 			'label_attr': {'class': 'my-2 fs-6'}
-        }) }}
+      }) }}
 		{{ form_row(registrationForm.plainPassword, {
-            label: 'Password',
-            'attr': {'class': 'my-2'},
+      label: 'Password',
+      'attr': {'class': 'my-2'},
 			'label_attr': {'class': 'my-2 fs-6'}
-        }) }}
+      }) }}
 		{{ form_row(registrationForm.agreeTerms, {
-            'attr': {'class': 'my-2 float-none'},
+      'attr': {'class': 'my-2 float-none'},
 			'label_attr': {'class': 'my-1 small'}
-        }) }}
+      }) }}
 
 		<button class="btn btn-lg btn-primary mt-4" type="submit">Create an account</button>
 
