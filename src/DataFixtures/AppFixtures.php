@@ -29,12 +29,13 @@ class AppFixtures extends Fixture
 
         $admin = new User;
 
-        $hash = $this->encoder->encodePassword($admin, "password");
+        $hash = $this->encoder->encodePassword($admin, $_ENV['SUPER_ADMIN_PASSWORD']);
 
-        $admin->setEmail("e_bichet@yahoo.fr")
+        $admin->setEmail($_ENV['SUPER_ADMIN_EMAIL'])
             ->setPassword($hash)
             ->setFullname("Admin")
-            ->setRoles(['ROLE_ADMIN']);
+            ->setRoles(['ROLE_ADMIN'])
+            ->setIsVerified(1);
 
         $manager->persist($admin);
 
@@ -43,7 +44,8 @@ class AppFixtures extends Fixture
             $hash = $this->encoder->encodePassword($user, "password");
             $user->setEmail("user$u@email.com")
                 ->setFullname($faker->name())
-                ->setPassword($hash);
+                ->setPassword($hash)
+                ->setIsVerified(mt_rand(0, 1));
 
             $manager->persist($user);
         }
