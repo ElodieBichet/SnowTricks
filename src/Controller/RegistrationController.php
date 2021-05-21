@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
+use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
+use Symfony\Component\Mime\Address;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -59,7 +60,9 @@ class RegistrationController extends AbstractController
 
             $this->addFlash('warning', 'Please click on the link in the email that has been sent to you to validate your new account.');
 
-            return $this->redirectToRoute('app_register');
+            return $this->redirect(
+                $this->generateUrl('homepage') . '#main-content'
+            );
         }
 
         return $this->render('registration/register.html.twig', [
@@ -70,13 +73,26 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/verify/email", name="app_verify_email")
      */
-    public function verifyUserEmail(Request $request): Response
+    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
+
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $id = $request->get('id'); // retrieve the user id from the url
+
+        // Verify the user id exists and is not null
+        if (null === $id) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        $user = $userRepository->find($id);
+
+        if (null === $user) {
+            return $this->redirectToRoute('security_login');
+        }
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
 
@@ -86,8 +102,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirect(
-            $this->generateUrl('homepage') . '#main-content'
-        );
+        return $this->redirectToRoute('security_login');
     }
 }

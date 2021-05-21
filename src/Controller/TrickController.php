@@ -53,7 +53,7 @@ class TrickController extends AbstractController
         if ($page >= $lastPageNumber) {
             $isLastPage = true;
         }
-        dump($lastPageNumber);
+
         return $this->render('trick/list.html.twig', [
             'tricks' => $data,
             'page' => $page,
