@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Group;
+use App\Entity\Message;
 use App\Entity\Trick;
 use Cocur\Slugify\Slugify;
 use Doctrine\Persistence\ObjectManager;
@@ -27,9 +28,12 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create();
 
+        // Create admin user
         $admin = new User;
 
         $hash = $this->encoder->encodePassword($admin, $_ENV['SUPER_ADMIN_PASSWORD']);
+
+        $users = [];
 
         $admin->setEmail($_ENV['SUPER_ADMIN_EMAIL'])
             ->setPassword($hash)
@@ -39,6 +43,9 @@ class AppFixtures extends Fixture
 
         $manager->persist($admin);
 
+        array_push($users, $admin);
+
+        // Create fake users
         for ($u = 0; $u < 9; $u++) {
             $user = new User();
             $hash = $this->encoder->encodePassword($user, "password");
@@ -48,8 +55,10 @@ class AppFixtures extends Fixture
                 ->setIsVerified(mt_rand(0, 1));
 
             $manager->persist($user);
+            array_push($users, $user);
         }
 
+        // Create groups and fake tricks and messages
         $groupNames = ['straight air', 'grab', 'spin', 'flips and inverted rotations', 'inverted hand plants', 'slide', 'stall', 'tweaks and variations', 'other'];
         foreach ($groupNames as $name) {
             $group = new Group;
@@ -72,7 +81,21 @@ class AppFixtures extends Fixture
                 if ($random >= 1) {
                     $trick->setUpdatedAt($faker->dateTimeBetween($trick->getUpdatedAt()));
                 }
+
                 $manager->persist($trick);
+
+                // fake message
+                for ($m = 0; $m < mt_rand(mt_rand(0, 2), 12); $m++) {
+                    $message = new Message;
+                    $author = $users[array_rand($users)];
+                    $message
+                        ->setAuthor($author)
+                        ->setTrick($trick)
+                        ->setContent($faker->paragraph(mt_rand(1, 4)))
+                        ->setCreatedAt($faker->dateTimeBetween($trick->getCreatedAt()));
+
+                    $manager->persist($message);
+                }
             }
         };
 
