@@ -85,7 +85,7 @@ class AppFixtures extends Fixture
                 $manager->persist($trick);
 
                 // fake message
-                for ($m = 0; $m < mt_rand(mt_rand(0, 2), 12); $m++) {
+                for ($m = 0; $m < mt_rand(mt_rand(0, 2), 15); $m++) {
                     $message = new Message;
                     $author = $users[array_rand($users)];
                     $message
