@@ -49,12 +49,16 @@
 				</div>
 			{% endif %}
 		</div>
-		{{ render(path('message_page_with_limit', {trickId: trick.id, page: 1, limit: 5})) }}
-		<span class="text-center w-100 row">
-			<a href="#" class="btn btn-light mx-auto w-75" id="loadmore">
-				<i class="fas fa-spinner"></i>
-				Load more messages</a>
-		</span>
+		{% if trick.messages | length > 0 %}
+			<h2>{{ trick.messages | length }}
+				messages</h2>
+			{{ render(path('message_page_with_limit', {trickId: trick.id, page: 1, limit: 5})) }}
+			<span class="text-center w-100 row">
+				<a href="#" class="btn btn-light mx-auto w-75" id="loadmore">
+					<i class="fas fa-spinner"></i>
+					Load more messages</a>
+			</span>
+		{% endif %}
 	</div>
 {% endblock %}
 
