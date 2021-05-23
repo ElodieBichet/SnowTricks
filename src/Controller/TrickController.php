@@ -18,8 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class TrickController extends AbstractController
 {
-    protected $paginator;
-
     protected $trickRepository;
 
     public function __construct(TrickRepository $trickRepository)
@@ -98,8 +96,10 @@ class TrickController extends AbstractController
      */
     public function show(Trick $trick): Response
     {
+        $messages = $trick->getMessages();
+
         return $this->render('trick/show.html.twig', [
-            'trick' => $trick,
+            'trick' => $trick
         ]);
     }
 

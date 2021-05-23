@@ -49,7 +49,16 @@
 				</div>
 			{% endif %}
 		</div>
+		{{ render(path('message_page_with_limit', {trickId: trick.id, page: 1, limit: 5})) }}
+		<span class="text-center w-100 row">
+			<a href="#" class="btn btn-light mx-auto w-75" id="loadmore">
+				<i class="fas fa-spinner"></i>
+				Load more messages</a>
+		</span>
 	</div>
+{% endblock %}
 
-
+{% block javascripts %}
+	{{ parent() }}
+	{{ include('shared/_loadmore.html.twig') }}
 {% endblock %}

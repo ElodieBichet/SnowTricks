@@ -1,0 +1,19 @@
+{% for message in messages %}
+	<div class="row mb-2 d-flex">
+		<div class="col-2">
+			{{ message.author.fullname }}<br>
+			{{ message.createdAt|date('F j, Y \\a\\t H:i') }}
+		</div>
+		<div class="col">
+			{{ message.content }}
+		</div>
+	</div>
+{% endfor %}
+
+{% if isLastPage == false %}
+	<span class="d-none">
+		{{ path('message_page_with_limit', {trickId: trickId, page: page+1, limit: limit}) }}
+	</span>
+{% else %}
+	<span class="d-none"></span>
+{% endif %}
