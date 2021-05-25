@@ -8,3 +8,13 @@
 	</button>
 </div>
 {{ form_end(form) }}
+
+<script>
+	// Scroll to the form if there is invalid feedback to display
+document.addEventListener("DOMContentLoaded", function () {
+if (document.querySelector('.invalid-feedback')) {
+let element = document.getElementById('messages');
+window.scroll(0, element.offsetTop);
+}
+});
+</script>
