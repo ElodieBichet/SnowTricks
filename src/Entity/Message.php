@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -31,6 +32,8 @@ class Message
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="You must write a message")
+     * @Assert\Length(min=3, minMessage="Your message must have at least 3 characters")
      */
     private $content;
 

@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Entity\Message;
 use App\Form\TrickType;
-use App\Repository\TrickRepository;
+use App\Form\MessageType;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManager;
+use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,14 +94,34 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/{group_slug}/{slug}", name="trick_show", methods={"GET"}, priority=-1)
+     * @Route("/{group_slug}/{slug}", name="trick_show", methods={"GET", "POST"}, priority=-1)
      */
-    public function show(Trick $trick): Response
+    public function show(Trick $trick, Request $request, EntityManagerInterface $em): Response
     {
-        $messages = $trick->getMessages();
+        $currentUser = $this->getUser();
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($currentUser && $form->isSubmitted() && $form->isValid()) {
+            $message->setCreatedAt(new \DateTime());
+            $message->setTrick($trick);
+            $message->setAuthor($currentUser);
+
+            $em->persist($message);
+            $em->flush();
+
+            $this->addFlash('success', 'Your message has been successfully added.');
+
+            return $this->redirectToRoute('trick_show', [
+                'group_slug' => $trick->getTrickGroup()->getSlug(),
+                'slug' => $trick->getSlug()
+            ]);
+        }
 
         return $this->render('trick/show.html.twig', [
-            'trick' => $trick
+            'trick' => $trick,
+            'form' => $form->createView()
         ]);
     }
 
