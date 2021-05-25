@@ -1,0 +1,10 @@
+{{ form_start(form, {'attr': {'class': 'mx-2 my-3'}}) }}
+<div class="row">
+	{{ form_label(form.content) }}
+	{{ form_widget(form.content, {'attr': {'class': 'col'}}) }}
+	<button class="btn btn-primary col-auto">
+		<i class="fas fa-comment"></i>
+		<span class="d-none d-md-inline">Add a message</span>
+	</button>
+</div>
+{{ form_end(form) }}

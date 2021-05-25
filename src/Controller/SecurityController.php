@@ -15,13 +15,6 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     $user = $this->getUser();
-        //     if (!$user->isVerified()) {
-        //         $this->addFlash('warning', 'Your email is not verified. Please click on the link in the email that has been sent to you or request a new link.');
-        //         return $this->redirectToRoute('security_logout');
-        //     }
-        // }
 
         $form = $this->createForm(LoginType::class);
 

@@ -1,0 +1,32 @@
+<section id="messages" class="mx-auto my-3 w-md-75 px-3">
+
+	<h2 class="h4">
+		<i class="far fa-comment"></i>
+		{{ trick.messages | length }}
+		message{{ (trick.messages | length) > 1 ? 's' : '' }}</h2>
+
+	{% if trick.messages | length <= 0 %}
+		<p class="mx-2 my-3">Start a new discussion about this trick.</p>
+	{% endif %}
+
+	{% if app.user %}
+		{% include "message/_form.html.twig" %}
+	{% else %}
+		<p class="mx-2 my-3">
+			<a href="{{ path('security_login') }}">Sign in now</a>
+			to join the discussion.
+		</p>
+	{% endif %}
+
+	<hr class="my-4">
+
+	{% if trick.messages | length > 0 %}
+		{{ render(path('message_page_with_limit', {trickId: trick.id, page: 1, limit: 5})) }}
+		<span class="text-center w-100 row">
+			<a href="#" class="btn btn-light mx-auto w-75" id="loadmore">
+				<i class="fas fa-spinner"></i>
+				Load more messages</a>
+		</span>
+	{% endif %}
+
+</section>

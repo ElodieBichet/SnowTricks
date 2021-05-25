@@ -1,10 +1,14 @@
 {% for message in messages %}
-	<div class="row mb-2 d-flex">
-		<div class="col-2">
+	<div class="row mb-4 justify-content-between">
+		<div class="col-12 col-sm-4 col-lg-3">
+			<i class="far fa-user"></i>
 			{{ message.author.fullname }}<br>
-			{{ message.createdAt|date('F j, Y \\a\\t H:i') }}
+			<span class="small">
+				<i class="far fa-clock"></i>
+				{{ message.createdAt|date('F j, Y \\a\\t H:i') }}
+			</span>
 		</div>
-		<div class="col">
+		<div class="col ps-3 border-start">
 			{{ message.content }}
 		</div>
 	</div>
