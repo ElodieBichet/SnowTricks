@@ -14,10 +14,12 @@
 				<div class="d-flex align-items-start">
 					{{ include('trick/_back_to_list.html.twig') }}
 					<span class="flex-grow-1"></span>
-					<a class="btn btn-primary me-1 mt-1" href="{{ path('trick_edit', {'id': trick.id}) }}" title="Edit the trick {{ trick.name }}">
-						<i class="fas fa-pencil-alt"></i>
-					</a>
-					{{ include('trick/_delete_form.html.twig') }}
+					{% if app.user %}
+						<a class="btn btn-primary me-1 mt-1" href="{{ path('trick_edit', {'id': trick.id}) }}" title="Edit the trick {{ trick.name }}">
+							<i class="fas fa-pencil-alt"></i>
+						</a>
+						{{ include('trick/_delete_form.html.twig') }}
+					{% endif %}
 				</div>
 			</div>
 			<h1 class="h2 position-absolute top-50 start-50 translate-middle text-center w-100 p-2" style="text-shadow: #FFF 2px 0 10px;">

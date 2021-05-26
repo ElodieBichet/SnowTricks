@@ -6,10 +6,12 @@
 				<h2 class="card-title h5 flex-grow-1 p-2 mb-1">
 					<a href="{{ path('trick_show', {'group_slug': trick.trickGroup.slug, 'slug': trick.slug}) }}" title="{{ trick.name }}">{{ trick.name }}</a>
 				</h2>
-				<a class="btn btn-primary me-1 mt-1" href="{{ path('trick_edit', {'id': trick.id}) }}" title="Edit the trick {{ trick.name }}">
-					<i class="fas fa-pencil-alt"></i>
-				</a>
-				{{ include('trick/_delete_form.html.twig') }}
+				{% if app.user %}
+					<a class="btn btn-primary me-1 mt-1" href="{{ path('trick_edit', {'id': trick.id}) }}" title="Edit the trick {{ trick.name }}">
+						<i class="fas fa-pencil-alt"></i>
+					</a>
+					{{ include('trick/_delete_form.html.twig') }}
+				{% endif %}
 			</div>
 			<div class="card-footer d-flex align-items-end justify-content-between px-2 py-0">
 				<p class="badge bg-info rounded-pill mb-1 text-wrap">
