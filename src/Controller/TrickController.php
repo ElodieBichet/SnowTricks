@@ -6,6 +6,7 @@ use App\Entity\Trick;
 use App\Entity\Message;
 use App\Form\TrickType;
 use App\Form\MessageType;
+use App\Pagination\PaginationService;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManager;
 use App\Repository\TrickRepository;
@@ -41,25 +42,14 @@ class TrickController extends AbstractController
      * @Route("/page/{page<\d+>}", name="trick_page", methods={"GET"})
      * @Route("/page/{page<\d+>}/{limit}-per-page", name="trick_page_with_limit", methods={"GET"})
      */
-    public function renderPaginatedTricks(int $page = 1, int $limit = 10)
+    public function renderPaginatedTricks(int $page = 1, int $limit = 10, PaginationService $pagination)
     {
-        $offset = (($page - 1) * $limit);
-        $data = $this->trickRepository->findBy([], ['updatedAt' => 'DESC'], $limit, $offset);
+        $criteria = [];
+        $orderBy = ['updatedAt' => 'DESC'];
 
-        $lastPageNumber = ceil(count($this->trickRepository->findAll()) / $limit);
+        $options = $pagination->getRenderOptions('tricks', $this->trickRepository, $criteria, $orderBy, $limit, $page);
 
-        $isLastPage = false;
-
-        if ($page >= $lastPageNumber) {
-            $isLastPage = true;
-        }
-
-        return $this->render('trick/list.html.twig', [
-            'tricks' => $data,
-            'page' => $page,
-            'limit' => $limit,
-            'isLastPage' => $isLastPage
-        ]);
+        return $this->render('trick/list.html.twig', $options);
     }
 
     /**
