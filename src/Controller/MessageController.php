@@ -26,11 +26,12 @@ class MessageController extends AbstractController
 
     /**
      * @Route("/all", name="message")
+     * @IsGranted("ROLE_ADMIN", message="You have to be authenticated as an admin to see this page")
      */
     public function index(): Response
     {
         return $this->render('message/index.html.twig', [
-            'controller_name' => 'MessageController',
+            'messages' => $this->messageRepository->findAll(),
         ]);
     }
 

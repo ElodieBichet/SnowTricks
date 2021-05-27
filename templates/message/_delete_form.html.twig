@@ -1,6 +1,6 @@
 <form name="delete" method="post" action="{{ path('message_delete', {'id': message.id}) }}">
 	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ message.id) }}">
-	<button type="button" class="btn btn-sm btn-danger h-100 me-1 mt-1" title="Delete the message #{{ message.id }}" data-bs-toggle="modal" data-bs-target="#modalConfirm-{{ message.id }}">
+	<button type="button" class="btn btn-sm btn-danger h-100 me-1 mt-1" title="Delete the message #{{ message.id }}" data-bs-toggle="modal" data-bs-target="#modalConfirm-message{{ message.id }}">
 		<i class="fas fa-trash-alt"></i>
 		{{ button_label|default('') }}
 	</button>

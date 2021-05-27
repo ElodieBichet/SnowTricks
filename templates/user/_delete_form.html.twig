@@ -1,0 +1,8 @@
+<form name="delete" method="post" action="{{ path('user_delete', {'id': user.id}) }}">
+	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+	<button type="button" class="btn btn-danger h-100 me-1 mt-1" title="Delete the user {{ user.fullname }}" data-bs-toggle="modal" data-bs-target="#modalConfirm-user{{ user.id }}">
+		<i class="fas fa-trash-alt"></i>
+		{{ button_label|default('') }}
+	</button>
+	{{ include('shared/_modal.html.twig', {'itemType': 'user', 'itemId': user.id, 'itemName': user.fullname}) }}
+</form>

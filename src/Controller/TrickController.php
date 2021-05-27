@@ -31,6 +31,7 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/all", name="trick_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN", message="You have to be authenticated as an admin to see this page")
      */
     public function index(): Response
     {

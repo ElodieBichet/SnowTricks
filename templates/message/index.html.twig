@@ -1,20 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MessageController!{% endblock %}
+{% block title %}Messages admin
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<h1>Messages admin</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Trick</th>
+				<th>Author</th>
+				<th>Message</th>
+				<th>CreatedAt</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for message in messages %}
+				<tr>
+					<td>{{ message.id }}</td>
+					<td>{{ message.trick.id }}</td>
+					<td>{{ message.author.fullname }}</td>
+					<td>{{ message.content }}</td>
+					<td>{{ message.createdAt ? message.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+					<td>
+						<div class="d-flex align-items-start">
+							<div class="mt-1 me-1">
+								<a class="btn btn-sm btn-primary" href="{{ path('trick_show', {'slug': message.trick.slug, 'group_slug': message.trick.trickGroup.slug}) }}#messages">
+									<i class="fas fa-eye"></i>
+								</a>
+							</div>
+							{{ include('message/_delete_form.html.twig') }}
+						</div>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="7">no message found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/formation/ocr/p6/projet/SnowTricks/src/Controller/MessageController.php'|file_link(0) }}">src/Controller/MessageController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/formation/ocr/p6/projet/SnowTricks/templates/message/index.html.twig'|file_link(0) }}">templates/message/index.html.twig</a></code></li>
-    </ul>
-</div>
 {% endblock %}
