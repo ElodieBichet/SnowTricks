@@ -26,6 +26,12 @@
 				Load more tricks</a>
 		</span>
 	</div>
+	{% if app.user %}
+		<a class="btn btn-outline-primary btn-sm rounded-pill" href="{{ path('trick_new') }}">
+			<i class="fa fa-plus"></i>
+			Add a new trick
+		</a>
+	{% endif %}
 {% endblock %}
 {% block stylesheets %}
 	{{ parent() }}

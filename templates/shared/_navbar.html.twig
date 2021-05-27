@@ -12,7 +12,17 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{{ path('homepage') }}#main-content">Tricks</a>
+				<div class="d-flex">
+					<a class="nav-link" href="{{ path('homepage') }}#main-content">Tricks</a>
+					{% if app.user %}
+						<a class="nav-link ms-2 ms-lg-0" href="{{ path('trick_new') }}">
+							<span class="badge rounded-pill bg-secondary py-1 px-2">
+								<i class="fa fa-plus"></i>
+								Add
+							</span>
+						</a>
+					{% endif %}
+				</div>
 			</li>
 			{% if app.user %}
 				<li class="nav-item">
