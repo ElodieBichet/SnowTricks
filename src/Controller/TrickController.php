@@ -6,14 +6,15 @@ use App\Entity\Trick;
 use App\Entity\Message;
 use App\Form\TrickType;
 use App\Form\MessageType;
-use App\Pagination\PaginationService;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManager;
 use App\Repository\TrickRepository;
+use App\Pagination\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -54,6 +55,7 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/new", name="trick_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER", message="You have to be authenticated to create a new trick")
      */
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -117,6 +119,7 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/{id<\d+>}/edit", name="trick_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER", message="You have to be authenticated to edit a trick")
      */
     public function edit(Request $request, Trick $trick, EntityManagerInterface $em): Response
     {
@@ -145,6 +148,7 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/{id}", name="trick_delete", methods={"POST"})
+     * @IsGranted("ROLE_USER", message="You have to be authenticated to delete a trick")
      */
     public function delete(Request $request, Trick $trick): Response
     {
