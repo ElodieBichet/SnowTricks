@@ -11,6 +11,12 @@
 		<div class="col ps-3 border-start">
 			{{ message.content }}
 		</div>
+		{% if app.user %}
+			dump
+			<div class="col-auto">
+				{{ include('message/_delete_form.html.twig') }}
+			</div>
+		{% endif %}
 	</div>
 {% endfor %}
 
