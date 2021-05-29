@@ -4,16 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Picture;
 use App\Form\PictureType;
-use Cocur\Slugify\Slugify;
+use App\Service\FileUploaderService;
 use App\Repository\PictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * @Route("/picture")
@@ -40,7 +40,7 @@ class PictureController extends AbstractController
     /**
      * @Route("/new", name="picture_new", methods={"GET","POST"})
      */
-    public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    public function new(Request $request, EntityManagerInterface $em, FileUploaderService $fileUploader): Response
     {
         $picture = new Picture();
         $form = $this->createForm(PictureType::class, $picture);
@@ -54,24 +54,10 @@ class PictureController extends AbstractController
             // this condition is needed because the 'filename' field is not required
             // so the image file must be processed only when a file is uploaded
             if ($pictureFile) {
-                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
-
-                // Move the file to the directory where pictures are stored
-                try {
-                    $pictureFile->move(
-                        $this->getParameter('pictures_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-
+                $pictureFilename = $fileUploader->upload($pictureFile);
                 // updates the 'filename' property to store the image file name
                 // instead of its contents
-                $picture->setFilename($newFilename);
+                $picture->setFilename($pictureFilename);
             }
 
             $em->persist($picture);
@@ -86,6 +72,44 @@ class PictureController extends AbstractController
         }
 
         return $this->render('picture/new.html.twig', [
+            'picture' => $picture,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id<\d+>}/edit", name="picture_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER", message="You have to be authenticated to edit a picture")
+     */
+    public function edit(Request $request, EntityManagerInterface $em, Picture $picture, FileUploaderService $fileUploader): Response
+    {
+        $form = $this->createForm(PictureType::class, $picture);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // $picture->setFilename(
+            //     new File($this->getParameter('pictures_directory') . '/' . $picture->getFilename())
+            // );
+            /** @var UploadedFile $pictureFile */
+            $pictureFile = $form->get('filename')->getData();
+
+            // this condition is needed because the 'filename' field is not required
+            // so the image file must be processed only when a file is uploaded
+            if ($pictureFile) {
+                $pictureFilename = $fileUploader->upload($pictureFile);
+                // updates the 'filename' property to store the image file name
+                // instead of its contents
+                $picture->setFilename($pictureFilename);
+            }
+
+            $em->persist($picture);
+            $em->flush();
+
+            $this->addFlash('success', 'The picture has been successfully updated.');
+        }
+
+        return $this->render('picture/edit.html.twig', [
             'picture' => $picture,
             'form' => $form->createView()
         ]);

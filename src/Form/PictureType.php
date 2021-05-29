@@ -24,7 +24,7 @@ class PictureType extends AbstractType
                 'attr' => ['placeholder' => 'Image short description']
             ])
             ->add('filename', FileType::class, [
-                'label' => 'Image file (.jpg, .jpeg, .png) - 3Mo max',
+                'label' => 'Image file (.jpg, .jpeg, .png) - 2Mo max',
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
                 // make it optional so you don't have to re-upload the file
@@ -34,7 +34,7 @@ class PictureType extends AbstractType
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
-                        'maxSize' => '3072k',
+                        'maxSize' => '2048k',
                         'mimeTypes' => [
                             'image/jpg',
                             'image/jpeg',
