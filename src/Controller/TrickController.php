@@ -9,7 +9,7 @@ use App\Form\MessageType;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManager;
 use App\Repository\TrickRepository;
-use App\Pagination\PaginationService;
+use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

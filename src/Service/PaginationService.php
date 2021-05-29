@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pagination;
+namespace App\Service;
 
 class PaginationService
 {

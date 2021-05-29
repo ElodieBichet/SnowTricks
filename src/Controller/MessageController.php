@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Message;
-use App\Pagination\PaginationService;
+use App\Service\PaginationService;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
