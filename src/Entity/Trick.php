@@ -72,7 +72,7 @@ class Trick
     private $pictures;
 
     /**
-     * @ORM\OneToOne(targetEntity=Picture::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Picture::class, mappedBy="trick", orphanRemoval=true)
      */
     private $mainPicture;
 
