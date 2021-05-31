@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Picture;
+use App\Entity\Trick;
 use App\Form\PictureType;
 use App\Service\FileUploaderService;
 use App\Repository\PictureRepository;
@@ -54,6 +55,7 @@ class PictureController extends AbstractController
             // this condition is needed because the 'filename' field is not required
             // so the image file must be processed only when a file is uploaded
             if ($pictureFile) {
+                // Upload the file
                 $pictureFilename = $fileUploader->upload($pictureFile);
                 // updates the 'filename' property to store the image file name
                 // instead of its contents
@@ -88,16 +90,16 @@ class PictureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // $picture->setFilename(
-            //     new File($this->getParameter('pictures_directory') . '/' . $picture->getFilename())
-            // );
             /** @var UploadedFile $pictureFile */
             $pictureFile = $form->get('filename')->getData();
 
             // this condition is needed because the 'filename' field is not required
             // so the image file must be processed only when a file is uploaded
             if ($pictureFile) {
+                // Upload the new file
                 $pictureFilename = $fileUploader->upload($pictureFile);
+                // Remove the old file
+                unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
                 // updates the 'filename' property to store the image file name
                 // instead of its contents
                 $picture->setFilename($pictureFilename);
@@ -107,6 +109,11 @@ class PictureController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'The picture has been successfully updated.');
+
+            return $this->redirectToRoute('trick_show', [
+                'group_slug' => $picture->getTrick()->getTrickGroup()->getSlug(),
+                'slug' => $picture->getTrick()->getSlug()
+            ]);
         }
 
         return $this->render('picture/edit.html.twig', [

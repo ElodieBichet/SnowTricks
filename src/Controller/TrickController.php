@@ -4,16 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Trick;
 use App\Entity\Message;
+use App\Entity\Picture;
 use App\Form\TrickType;
 use App\Form\MessageType;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManager;
-use App\Repository\TrickRepository;
 use App\Service\PaginationService;
+use App\Repository\TrickRepository;
+use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -122,7 +125,7 @@ class TrickController extends AbstractController
      * @Route("/{id<\d+>}/edit", name="trick_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to edit a trick")
      */
-    public function edit(Request $request, Trick $trick, EntityManagerInterface $em): Response
+    public function edit(Request $request, Trick $trick, EntityManagerInterface $em, FileUploaderService $fileUploader): Response
     {
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
@@ -130,6 +133,30 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $trick->setUpdatedAt(new \DateTime());
             $trick->setSlug((new Slugify())->slugify($trick->getName()));
+
+            $pictureForms = $form->get('pictures');
+
+            // Embed pictures forms
+            foreach ($pictureForms as $pictureForm) {
+
+                /** @var Picture $picture */
+                $picture = $pictureForm->getData();
+
+                /** @var UploadedFile $pictureFile */
+                $pictureFile = $pictureForm->get('filename')->getData();
+
+                // this condition is needed because the 'filename' field is not required
+                // so the image file must be processed only when a file is uploaded
+                if ($pictureFile) {
+                    // Upload the new file
+                    $pictureFilename = $fileUploader->upload($pictureFile);
+                    // Remove the old file
+                    unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
+                    // updates the 'filename' property to store the image file name
+                    // instead of its contents
+                    $picture->setFilename($pictureFilename);
+                }
+            }
 
             $em->flush();
 
