@@ -54,6 +54,8 @@ class User implements UserInterface
      */
     private $messages;
 
+    protected $avatar;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -192,5 +194,12 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        $avatar = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->getEmail()))) . "?s=60";
+
+        return $avatar;
     }
 }
