@@ -13,14 +13,19 @@ class PaginationService
     return false;
   }
 
-  public function getRenderOptions(string $itemsName, $repo, $criteria = [], $orderBy = [], $limit = 10, $page = 1)
+  public function getRenderOptions(string $itemsName, $queryBuilder, int $limit = 10, int $page = 1)
   {
-    $offset = ($page - 1) * $limit;
-    $data = $repo->findBy($criteria, $orderBy, $limit, $offset);
+    $offset = (int) ($page - 1) * $limit;
 
-    $nbItems = count($repo->findBy($criteria));
-
+    $nbItems = count($queryBuilder->getQuery()->getResult());
     $lastPageNumber = ceil($nbItems / $limit);
+
+    $queryBuilder
+      ->setMaxResults($limit)
+      ->setFirstResult($offset);
+
+    $data = $queryBuilder->getQuery()->getResult();
+
     $isLastPage = $this->isLastPage($page, $lastPageNumber);
 
     $options = [
