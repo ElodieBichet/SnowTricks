@@ -198,8 +198,8 @@ class User implements UserInterface
 
     public function getAvatar(): ?string
     {
-        $avatar = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->getEmail()))) . "?s=60";
+        $this->avatar = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->getEmail())));
 
-        return $avatar;
+        return $this->avatar;
     }
 }
