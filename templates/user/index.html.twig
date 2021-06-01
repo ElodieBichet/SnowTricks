@@ -10,6 +10,7 @@
 		<thead>
 			<tr>
 				<th>Id</th>
+				<th>Avatar</th>
 				<th>Full Name</th>
 				<th>Email address</th>
 				<th>Verified ?</th>
@@ -22,6 +23,9 @@
 			{% for user in users %}
 				<tr>
 					<td>{{ user.id }}</td>
+					<td>
+						<img src="{{ user.avatar }}" alt="{{ user.fullname }}">
+					</td>
 					<td>{{ user.fullname }}</td>
 					<td>{{ user.email }}</td>
 					<td>{{ user.isVerified }}</td>
