@@ -8,7 +8,6 @@ use App\Entity\Picture;
 use App\Form\TrickType;
 use App\Form\MessageType;
 use Cocur\Slugify\Slugify;
-use Doctrine\ORM\EntityManager;
 use App\Service\PaginationService;
 use App\Repository\TrickRepository;
 use App\Service\FileUploaderService;
@@ -49,10 +48,10 @@ class TrickController extends AbstractController
      */
     public function renderPaginatedTricks(int $page = 1, int $limit = 10, PaginationService $pagination)
     {
-        $criteria = [];
-        $orderBy = ['updatedAt' => 'DESC'];
+        $queryBuilder = $this->trickRepository->createQueryBuilder('item')
+            ->orderBy('item.updatedAt', 'DESC');
 
-        $options = $pagination->getRenderOptions('tricks', $this->trickRepository, $criteria, $orderBy, $limit, $page);
+        $options = $pagination->getRenderOptions('tricks', $queryBuilder, $limit, $page);
 
         return $this->render('trick/list.html.twig', $options);
     }

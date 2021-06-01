@@ -5,9 +5,10 @@ namespace App\DataFixtures;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Group;
-use App\Entity\Message;
 use App\Entity\Trick;
+use App\Entity\Message;
 use Cocur\Slugify\Slugify;
+use App\Service\FileUploaderService;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -15,10 +16,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AppFixtures extends Fixture
 {
     protected $slugger;
-
     protected $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordEncoderInterface $encoder, FileUploaderService $fileUploader)
     {
         $this->slugger = new Slugify();
         $this->encoder = $encoder;
@@ -71,7 +71,7 @@ class AppFixtures extends Fixture
             for ($t = 0; $t < mt_rand(mt_rand(0, 2), 7); $t++) {
                 $trick = new Trick;
                 $trick
-                    ->setName(ucfirst($faker->words(mt_rand(1, 3), true)))
+                    ->setName(ucfirst($faker->words(mt_rand(2, 4), true)))
                     ->setSlug($this->slugger->slugify($trick->getName()))
                     ->setDescription($faker->paragraphs(mt_rand(1, 3), true))
                     ->setTrickGroup($group)

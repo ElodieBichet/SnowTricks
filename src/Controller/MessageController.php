@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Service\PaginationService;
 use App\Repository\MessageRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,10 +40,11 @@ class MessageController extends AbstractController
      */
     public function renderPaginatedMessages(int $trickId, int $page = 1, int $limit = 10, PaginationService $pagination)
     {
-        $criteria = ['trick' => $trickId];
-        $orderBy = ['createdAt' => 'DESC'];
+        $queryBuilder = $this->messageRepository->createQueryBuilder('item')
+            ->where("item.trick = $trickId")
+            ->orderBy('item.createdAt', 'DESC');
 
-        $options = $pagination->getRenderOptions('messages', $this->messageRepository, $criteria, $orderBy, $limit, $page);
+        $options = $pagination->getRenderOptions('messages', $queryBuilder, $limit, $page);
 
         $options['trickId'] = $trickId;
 
