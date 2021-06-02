@@ -16,21 +16,96 @@
 </div>
 
 
-<div>
-	<div class="pictures row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-start">
-		{% for pictureForm in form.pictures %}
-			<div class="col m-2">
-				<img class="img-fluid" src="{{ asset('uploads/pictures/' ~ pictureForm.vars.data.filename) }}" alt="{{ pictureForm.vars.data.title }}">
-				<input form="trick" type="hidden" id="{{ pictureForm.trick.vars.id }}" name="{{ pictureForm.trick.vars.full_name }}" value="{{ pictureForm.trick.vars.value }}">
-				{% do pictureForm.trick.setRendered() %}
-				{{ form_row(pictureForm.title, {'attr': {'form': 'trick'}}) }}
-				{{ form_row(pictureForm.description, {'attr': {'form': 'trick'}}) }}
-				{{ form_row(pictureForm.filename, {'attr': {'form': 'trick'}}) }}
-			</div>
+<section id="pictures" class="mx-auto my-3">
+
+	<h2 class="h4">
+		<i class="fas fa-photo-video"></i>
+		{{ trick.pictures | length }}
+		image{{ (trick.pictures | length) > 1 ? 's' : '' }}
+		{# &amp; {{ trick.videos | length }} video{{ (trick.videos | length) > 1 ? 's' : '' }} #}
+	</h2>
+
+
+	{% if trick.pictures | length <= 0 %}
+
+		<p class="mx-2 my-3">There is no picture to this trick.</p>
+
+	{% else %}
+
+		{% for pictureForm in form.pictures.children %}
+			{% for field in pictureForm.children %}
+				{% if field.vars.errors|length %}
+					<div class="alert alert-dismissible alert-danger">
+						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<strong>Error on the picture #{{ pictureForm.vars.data.id }}</strong>
+						You must fix it to be able to save the trick.
+					</div>
+				{% endif %}
+			{% endfor %}
 		{% endfor %}
-	</div>
+
+		<div class="d-md-none text-center">
+			<button class="btn btn-info collapse show" id="showBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Show media</button>
+			<button class="btn btn-info collapse" id="hideBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Hide media</button>
+		</div>
+
+		<div class="d-md-block collapse" id="medias">
+
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-start">
+
+				{% for pictureForm in form.pictures %}
+
+					<div class="col position-relative">
+						<div class="w-100 h-0 mt-3" style="max-width:100%; padding-top:70%; background: transparent url({{ asset('uploads/pictures/' ~ pictureForm.vars.data.filename) }}) no-repeat center center; background-size:cover;" title="{{ pictureForm.vars.data.title | capitalize }}">
+
+							<div class="position-absolute mt-3 me-2 pt-1 pe-2" style="top: 0; right:0;">
+								<button type="button" class="btn btn-primary" title="Edit the picture '{{ pictureForm.vars.data.title | capitalize }}'" data-bs-toggle="modal" data-bs-target="#modalEdit-picture{{ pictureForm.vars.data.id }}">
+									<i class="fas fa-pencil-alt"></i>
+								</button>
+
+								<button type="button" class="btn btn-danger" title="Delete the picture '{{ pictureForm.vars.data.title | capitalize }}'" data-bs-toggle="" data-bs-target="">
+									<i class="fas fa-trash-alt"></i>
+								</button>
+							</div>
+
+						</div>
+
+						<div class="modal fade" id="modalEdit-picture{{ pictureForm.vars.data.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Edit picture #{{ pictureForm.vars.data.id }}</h5>
+									</div>
+									<div class="modal-body">
+										<input form="trick" type="hidden" id="{{ pictureForm.trick.vars.id }}" name="{{ pictureForm.trick.vars.full_name }}" value="{{ pictureForm.trick.vars.value }}">
+										{% do pictureForm.trick.setRendered() %}
+										{{ form_row(pictureForm.title, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+										{{ form_row(pictureForm.description, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+										{{ form_row(pictureForm.filename, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+									</div>
+									<div class="modal-footer">
+										<small>
+											<i class="fas fa-exclamation-circle text-warning"></i>
+											<i>Note that changes are not saved until you save the trick</i>
+										</small>
+										<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+											Confirm changes</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				{% endfor %}
+
+			</div>
+		</div>
+	{% endif %}
 	{# <button type="button" class="add_item_link" data-collection-holder-class="pictures">Add a picture</button> #}
-</div>
+</section>
+
+
 <div class="m-3">
 	{{ form_errors(form.description) }}
 	<span class="input-group-text border-bottom-0 w-100">Description</span>

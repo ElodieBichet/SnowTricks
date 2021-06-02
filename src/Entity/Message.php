@@ -33,7 +33,7 @@ class Message
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="You must write a message")
-     * @Assert\Length(min=3, minMessage="Your message must have at least 3 characters")
+     * @Assert\Length(min=3, minMessage="Your message must have at least {{ limit }} characters")
      */
     private $content;
 

@@ -12,6 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PictureType extends AbstractType
 {
@@ -19,10 +21,35 @@ class PictureType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'attr' => ['placeholder' => 'Image title']
+                'required' => false,
+                'empty_data' => '',
+                'attr' => ['placeholder' => 'Image title'],
+                'constraints' => [
+                    new Length([
+                        'min' => 3,
+                        'max' => 50,
+                        'minMessage' => "The picture title must have at least {{ limit }} characters",
+                        'maxMessage' => "The picture title cannot be longer than {{ limit }} characters"
+                    ]),
+                    new NotBlank([
+                        'message' => "You must define a title"
+                    ])
+                ]
             ])
             ->add('description', TextType::class, [
-                'attr' => ['placeholder' => 'Image short description']
+                'required' => false,
+                'attr' => ['placeholder' => 'Image short description'],
+                'constraints' => [
+                    new Length([
+                        'min' => 3,
+                        'max' => 140,
+                        'minMessage' => "The picture description must have at least {{ limit }} characters",
+                        'maxMessage' => "The picture description cannot be longer than {{ limit }} characters"
+                    ]),
+                    new NotBlank([
+                        'message' => "You must write a short description"
+                    ])
+                ]
             ])
             ->add('filename', FileType::class, [
                 'label' => 'Image file (.jpg, .jpeg, .png) - 2Mo max',
