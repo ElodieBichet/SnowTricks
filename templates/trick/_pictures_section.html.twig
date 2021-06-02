@@ -24,9 +24,7 @@
 
 				{% for picture in trick.pictures %}
 					<div class="col position-relative">
-						<div
-							class="w-100 h-0 btn mt-3" style="max-width:100%; padding-top:70%; background: transparent url({{ asset('uploads/pictures/' ~ picture.filename) }}) no-repeat center center; background-size:cover;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ picture.title | capitalize }}">{# <p class="p-1 small" style="opacity: 0.8; background-color:#fff; max-height:2.1em; overflow: hidden;">{{ picture.title }}</p> #}
-						</div>
+						<div class="w-100 h-0 btn mt-3" style="max-width:100%; padding-top:70%; background: transparent url({{ asset('uploads/pictures/' ~ picture.filename) }}) no-repeat center center; background-size:cover;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ picture.title | capitalize }}"></div>
 					</div>
 				{% endfor %}
 
