@@ -67,7 +67,7 @@ class Trick
     private $messages;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      */
     private $pictures;
 
