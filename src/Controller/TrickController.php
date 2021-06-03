@@ -60,7 +60,7 @@ class TrickController extends AbstractController
      * @Route("/new", name="trick_new", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to create a new trick")
      */
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, FileUploaderService $fileUploader): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
@@ -70,6 +70,28 @@ class TrickController extends AbstractController
             $trick->setCreatedAt(new \DateTime());
             $trick->setUpdatedAt($trick->getCreatedAt());
             $trick->setSlug((new Slugify())->slugify($trick->getName()));
+
+            $pictureForms = $form->get('pictures');
+
+            // Embed pictures forms
+            foreach ($pictureForms as $pictureForm) {
+
+                /** @var Picture $picture */
+                $picture = $pictureForm->getData();
+
+                /** @var UploadedFile $pictureFile */
+                $pictureFile = $pictureForm->get('filename')->getData();
+
+                // this condition is needed because the 'filename' field is not required
+                // so the image file must be processed only when a file is uploaded
+                if ($pictureFile) {
+                    // Upload the new file
+                    $pictureFilename = $fileUploader->upload($pictureFile);
+                    // updates the 'filename' property to store the image file name
+                    // instead of its contents
+                    $picture->setFilename($pictureFilename);
+                }
+            }
 
             $em->persist($trick);
             $em->flush();
@@ -150,7 +172,9 @@ class TrickController extends AbstractController
                     // Upload the new file
                     $pictureFilename = $fileUploader->upload($pictureFile);
                     // Remove the old file
-                    unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
+                    if (is_file($this->getParameter('pictures_directory') . '/' . $picture->getFilename())) {
+                        unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
+                    }
                     // updates the 'filename' property to store the image file name
                     // instead of its contents
                     $picture->setFilename($pictureFilename);
@@ -182,7 +206,9 @@ class TrickController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
             $pictures = $trick->getPictures();
             foreach ($pictures as $picture) {
-                unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
+                if (file_exists($this->getParameter('pictures_directory') . '/' . $picture->getFilename())) {
+                    unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
+                }
             }
 
             $entityManager = $this->getDoctrine()->getManager();
