@@ -66,6 +66,10 @@
 					<i class="fas fa-pencil-alt"></i>
 					Edit your new picture
 				</button>
+
+				<button type="button" class="btn btn-danger" data-picture="pictureForm-new__name__" onclick="javascript:document.getElementById(this.getAttribute('data-picture')).remove()">
+					<i class="fas fa-trash-alt"></i>
+				</button>
 			</div>
 
 		</div>
@@ -109,7 +113,7 @@
 
 			{% for pictureForm in form.pictures %}
 
-				<div class="col position-relative">
+				<div class="col position-relative" id="pictureForm-{{ pictureForm.vars.id }}">
 					<div class="w-100 h-0 mt-3" style="max-width:100%; padding-top:70%; background: #DDD url({{ asset('uploads/pictures/' ~ pictureForm.vars.data.filename) }}) no-repeat center center; background-size:cover;" title="{{ pictureForm.vars.data.title | capitalize }}">
 
 						<div class="position-absolute mt-3 me-2 pt-1 pe-2" style="top: 0; right:0;">
@@ -117,11 +121,40 @@
 								<i class="fas fa-pencil-alt"></i>
 							</button>
 
-							<button type="button" class="btn btn-danger" title="Delete the picture '{{ pictureForm.vars.data.title | capitalize }}'" data-bs-toggle="" data-bs-target="">
+							<button type="button" class="btn btn-danger" title="Delete the picture '{{ pictureForm.vars.data.title | capitalize }}'" data-bs-toggle="modal" data-bs-target="#modalDelete-picture{{ pictureForm.vars.id }}">
 								<i class="fas fa-trash-alt"></i>
 							</button>
+
 						</div>
 
+					</div>
+
+					<div class="modal fade" id="modalDelete-picture{{ pictureForm.vars.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Delete picture #{{ pictureForm.vars.data.id }}</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true"></span>
+									</button>
+								</div>
+								<div class="modal-body">
+									Are your sure you want to permanently delete this picture?<br>
+									<span class="badge badge-sm bg-warning">Warning !</span>
+									This action will also delete the picture file on the server.
+								</div>
+								<div class="modal-footer">
+									<small>
+										<i class="fas fa-exclamation-circle text-warning"></i>
+										<i>Note that picture will not be removed until you save the trick</i>
+									</small><br>
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+									<button class="removePicture btn btn-danger" data-bs-dismiss="modal" data-picture="pictureForm-{{ pictureForm.vars.id }}">
+										<i class="fas fa-trash-alt"></i>
+										Delete</button>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div class="modal fade" id="modalEdit-picture{{ pictureForm.vars.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmLabel" aria-hidden="true">
@@ -154,8 +187,7 @@
 
 		</div>
 	</div>
-	{# {% endif %} #}
-	{# <button type="button" class="add_item_link" data-collection-holder-class="pictures">Add a picture</button> #}
+
 </section>
 
 
@@ -201,6 +233,11 @@ var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
 // add a new tag form (see next code block)
 addFormToCollection($collectionHolderClass);
 })
+
+$('.removePicture').on('click', function (e) {
+el = document.getElementById(this.getAttribute('data-picture'));
+el.remove();
+});
 });
 
 function addFormToCollection($collectionHolderClass) { // Get the ul that holds the collection of tags
@@ -226,7 +263,7 @@ newForm = newForm.replace(/__name__/g, index);
 $collectionHolder.data('index', index + 1);
 
 // Display the form in the page in an li, before the "Add a tag" link li
-var $newFormLi = $('<div class="col position-relative"></div>').append(newForm);
+var $newFormLi = $('<div class="col position-relative" id="pictureForm-new' + index + '"></div>').append(newForm);
 // Add the new form at the end of the list
 $collectionHolder.append($newFormLi)
 }

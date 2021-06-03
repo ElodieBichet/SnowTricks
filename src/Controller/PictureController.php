@@ -126,8 +126,10 @@ class PictureController extends AbstractController
      * @Route("/{id}", name="picture_delete", methods={"POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to delete a picture")
      */
-    public function delete(Request $request, Picture $picture): Response
+    public function delete(Request $request, Picture $picture): ?Response
     {
+        $trick = $picture->getTrick();
+
         if ($this->isCsrfTokenValid('delete' . $picture->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($picture);
@@ -135,8 +137,6 @@ class PictureController extends AbstractController
 
             $this->addFlash('success', 'The picture has been successfully removed.');
         }
-
-        $trick = $picture->getTrick();
 
         return $this->redirectToRoute('trick_show', [
             'group_slug' => $trick->getTrickGroup()->getSlug(),
