@@ -99,7 +99,7 @@ class PictureController extends AbstractController
                 // Upload the new file
                 $pictureFilename = $fileUploader->upload($pictureFile);
                 // Remove the old file
-                unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
+                $fileUploader->remove($picture->getFilename());
                 // updates the 'filename' property to store the image file name
                 // instead of its contents
                 $picture->setFilename($pictureFilename);

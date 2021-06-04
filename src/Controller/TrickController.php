@@ -172,9 +172,7 @@ class TrickController extends AbstractController
                     // Upload the new file
                     $pictureFilename = $fileUploader->upload($pictureFile);
                     // Remove the old file
-                    if (is_file($this->getParameter('pictures_directory') . '/' . $picture->getFilename())) {
-                        unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
-                    }
+                    if ($picture->getFilename()) $fileUploader->remove($picture->getFilename());
                     // updates the 'filename' property to store the image file name
                     // instead of its contents
                     $picture->setFilename($pictureFilename);
@@ -201,14 +199,14 @@ class TrickController extends AbstractController
      * @Route("/{id}", name="trick_delete", methods={"POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to delete a trick")
      */
-    public function delete(Request $request, Trick $trick): Response
+    public function delete(Request $request, Trick $trick, FileUploaderService $fileUploader): Response
     {
         if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
+
+            // Delete picture files on the trick
             $pictures = $trick->getPictures();
             foreach ($pictures as $picture) {
-                if (file_exists($this->getParameter('pictures_directory') . '/' . $picture->getFilename())) {
-                    unlink($this->getParameter('pictures_directory') . '/' . $picture->getFilename());
-                }
+                $fileUploader->remove($picture->getFilename());
             }
 
             $entityManager = $this->getDoctrine()->getManager();
