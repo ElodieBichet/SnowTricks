@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
+use App\Service\FileUploaderService;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -214,9 +215,9 @@ class Trick
             if ($picture->getTrick() === $this) {
                 $picture->setTrick(null);
             }
-        }
-        if (file_exists('./uploads/pictures/' . $picture->getFilename())) {
-            unlink('./uploads/pictures/' . $picture->getFilename());
+            if (file_exists('./uploads/pictures/' . $picture->getFilename())) {
+                unlink('./uploads/pictures/' . $picture->getFilename());
+            }
         }
 
         return $this;

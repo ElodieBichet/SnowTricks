@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   loadmoreButton = document.getElementById("loadmore");
   updateLink(loadmoreButton);

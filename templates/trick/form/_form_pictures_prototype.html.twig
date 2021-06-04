@@ -1,0 +1,42 @@
+<div class="w-100 h-0 mt-3" style="max-width:100%; padding-top:70%; background: #DDD" title="Add a picture">
+
+	<div class="position-absolute mt-3 me-2 pt-1 pe-2" style="top: 0; right:0;">
+
+		<button type="button" class="btn btn-primary" title="Add a new picture" data-bs-toggle="modal" data-bs-target="#modalEdit-picture-new__name__">
+			<i class="fas fa-pencil-alt"></i>
+			Edit your new picture
+		</button>
+
+		<button type="button" class="btn btn-danger" data-picture="pictureForm-new__name__" onclick="javascript:removeElement(document.getElementById(this.dataset.picture))">
+			<i class="fas fa-trash-alt"></i>
+		</button>
+	</div>
+
+</div>
+
+<div class="modal fade" id="modalEdit-picture-new__name__" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add a new picture</h5>
+			</div>
+			<div class="modal-body">
+
+				<input form="trick" type="hidden" id="{{ form.pictures.vars.prototype.trick.vars.id }}" name="{{ form.pictures.vars.prototype.trick.vars.full_name }}" value="{{ trick.id }}">
+				{% do form.pictures.vars.prototype.trick.setRendered() %}
+				{{ form_row(form.pictures.vars.prototype.title, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+				{{ form_row(form.pictures.vars.prototype.description, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+				{{ form_row(form.pictures.vars.prototype.filename, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+
+			</div>
+			<div class="modal-footer">
+				<small>
+					<i class="fas fa-exclamation-circle text-warning"></i>
+					<i>Note that the new picture is not saved until you save the trick</i>
+				</small>
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+					Add picture</button>
+			</div>
+		</div>
+	</div>
+</div>

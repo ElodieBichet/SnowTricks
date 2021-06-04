@@ -10,7 +10,7 @@
 	{% endif %}
 
 	{% if app.user %}
-		{% include "message/_form.html.twig" %}
+		{% include "message/form/_form.html.twig" %}
 	{% else %}
 		<p class="mx-2 my-3">
 			<a href="{{ path('security_login') }}">Sign in now</a>

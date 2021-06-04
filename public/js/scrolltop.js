@@ -1,7 +1,7 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   // Display top link button while scroll to the page bottom
-  window.addEventListener('scroll', function () {
+  window.addEventListener('scroll', () => {
     let posScroll = window.pageYOffset;
     let topLink = document.getElementById('top_link');
     if (posScroll >= 800)
@@ -34,6 +34,5 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     })();
   };
-
 
 });

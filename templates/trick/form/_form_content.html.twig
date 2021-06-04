@@ -1,0 +1,49 @@
+<div class="position-relative">
+	<div style="height:25rem; max-height: 50vw;">
+		<div class="position-absolute w-100 h-100" style="background: url({{ asset('img/victor-rodvang-kIavtjR0sZY-unsplash.jpg') }}) no-repeat center center; background-size: cover; opacity: .6; z-index:-1000;"></div>
+		<div class="d-flex align-items-start">
+			{{ include('trick/_back_to_list.html.twig') }}
+			<span class="flex-grow-1"></span>
+		</div>
+	</div>
+	<h1 class="h2 position-absolute top-50 start-50 translate-middle text-center w-100 p-2" style="text-shadow: #FFF 2px 0 10px;max-width: 25rem;">
+		<small>{{ form_errors(form.name) }}</small>
+		<div class="input-group flex-nowrap">
+			<span class="input-group-text">Name</span>
+			{{ form_widget(form.name, {'attr': {'form': 'trick'}}) }}
+		</div>
+	</h1>
+</div>
+
+{{ include('trick/form/_form_pictures.html.twig') }}
+
+<div class="m-3">
+	{{ form_errors(form.description) }}
+	<span class="input-group-text border-bottom-0 w-100">Description</span>
+	{{ form_widget(form.description, {'attr': {'form': 'trick', 'rows': 10, 'class': 'w-100'}}) }}</div>
+<div class="d-flex justify-content-center flex-column flex-md-row">
+	<div class="badge bg-info col-12 col-md-4 col-lg-3 my-2 mx-0 mx-lg-2">
+		<div class="input-group input-group-sm flex-nowrap my-1">
+			<span class="input-group-text">
+				<i class="far fa-check-circle"></i>
+				Group</span>
+			{{ form_widget(form.trickGroup, {'attr': {'form': 'trick'}}) }}
+		</div>
+	</div>
+	<div class="badge bg-primary col-12 col-md-4 col-lg-3 my-2 mx-0 mx-lg-2">
+		<span class="h6">
+			<i class="far fa-clock"></i>
+			Creation:<br>
+			{{ trick.createdAt ? trick.createdAt|date('F j, Y \\a\\t H:i') : "now"|date('F j, Y \\a\\t H:i') }}</span>
+	</div>
+	{% if trick.updatedAt != trick.createdAt %}
+		<div class="badge bg-secondary col-12 col-md-4 col-lg-3 my-2 mx-0 mx-lg-2">
+			<span class="h6">
+				<i class="far fa-clock"></i>
+				Last update:<br>
+				{{ trick.updatedAt ? trick.updatedAt|date('F j, Y \\a\\t H:i') : '' }}</span>
+		</div>
+	{% endif %}
+</div>
+
+<script src="{{ asset('js/collections_in_form.js') }}"></script>
