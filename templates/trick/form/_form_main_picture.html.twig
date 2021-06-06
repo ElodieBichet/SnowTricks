@@ -1,0 +1,29 @@
+<div class="modal fade" id="modalEdit-mainPicture" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edit main picture for	'{{ trick.name }}'</h5>
+			</div>
+			<div class="modal-body">
+
+				<p>Choose the main picture for this trick:</p>
+
+				<div id="mainPicPreview" class="float-sm-end col-8 col-sm-4 mx-auto">
+					<img src="{{ asset('uploads/pictures/' ~ trick.mainPicture.filename) }}" class="img-fluid" alt="main picture preview">
+				</div>
+
+				{{ form_widget(form.mainPicture) }}
+
+
+			</div>
+			<div class="modal-footer">
+				<small>
+					<i class="fas fa-exclamation-circle text-warning"></i>
+					<i>Note that changes are not saved until you save the trick</i>
+				</small>
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+					Confirm changes</button>
+			</div>
+		</div>
+	</div>
+</div>

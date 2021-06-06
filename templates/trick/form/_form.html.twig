@@ -2,4 +2,5 @@
 <button class="btn btn-primary h-100 me-1 mt-1">
 	<i class="fas fa-save"></i>
 	{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{{ form_row(form._token) }}
+{{ form_end(form, {'render_rest': false}) }}

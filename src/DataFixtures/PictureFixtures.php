@@ -28,11 +28,7 @@ class PictureFixtures extends Fixture
     {
         $faker = Factory::create();
 
-        $allTricks = [];
         $tricks = $this->trickRepository->findAll();
-        foreach ($tricks as $trick) {
-            $allTricks[] = $trick;
-        }
 
         // Empty uploads/pictures directory
         array_map('unlink', glob($this->fileUploader->getTargetDirectory() . '/*'));
@@ -69,6 +65,15 @@ class PictureFixtures extends Fixture
                     ->setDescription($faker->paragraph(1));
 
                 $manager->persist($picture);
+            }
+        }
+
+        $manager->flush();
+
+        foreach ($tricks as $trick) {
+            if ($faker->boolean(80)) {
+                $picture = $faker->randomElement($trick->getPictures());
+                $trick->setMainPicture($picture);
             }
         }
 
