@@ -91,7 +91,13 @@ class TrickController extends AbstractController
                     // instead of its contents
                     $picture->setFilename($pictureFilename);
                 }
+
+                // Use the first uploaded picture as main picture
+                if ($trick->getMainPicture() === NULL) {
+                    $trick->setMainPicture($picture);
+                }
             }
+
 
             $em->persist($trick);
             $em->flush();
@@ -176,6 +182,11 @@ class TrickController extends AbstractController
                     // updates the 'filename' property to store the image file name
                     // instead of its contents
                     $picture->setFilename($pictureFilename);
+                }
+
+                // Use the first uploaded picture as main picture, if none is defined
+                if ($trick->getMainPicture() === NULL) {
+                    $trick->setMainPicture($picture);
                 }
             }
 
