@@ -211,6 +211,19 @@ class TrickController extends AbstractController
     }
 
     /**
+     * @Route("/{id<\d+>}/login", name="connect_from_trick", methods={"GET"})
+     * @IsGranted("ROLE_USER", message="You have to be authenticated to join the discussion")
+     */
+    public function request_login(Trick $trick): Response
+    {
+        // redirect to the current trick after login
+        return $this->redirectToRoute('trick_show', [
+            'group_slug' => $trick->getTrickGroup()->getSlug(),
+            'slug' => $trick->getSlug()
+        ]);
+    }
+
+    /**
      * @Route("/{id}", name="trick_delete", methods={"POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to delete a trick")
      */

@@ -12,8 +12,10 @@
 	{% if app.user %}
 		{% include "message/form/_form.html.twig" %}
 	{% else %}
-		<p class="mx-2 my-3">
-			<a href="{{ path('security_login') }}">Sign in now</a>
+		<p
+			class="mx-2 my-3">
+			{# <a href="{{ path('security_login') }}">Sign in now</a> #}
+			<a href="{{ path('connect_from_trick', {'id': trick.id}) }}">Sign in now</a>
 			to join the discussion.
 		</p>
 	{% endif %}
