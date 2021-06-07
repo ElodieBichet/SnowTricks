@@ -1,6 +1,11 @@
 <div class="trick-card col d-flex align-items-stretch">
-	<div class="card mb-4">
-		<a href="{{ path('trick_show', {'group_slug': trick.trickGroup.slug, 'slug': trick.slug}) }}"><img src="{{ asset('img/visit-almaty-wN4D-mVR7fE-unsplash.jpg') }}" class="img-fluid" alt="Picture of {{ trick.name }}"></a>
+	<div class="card mb-4 w-100">
+		{% if trick.mainPicture is defined and trick.mainPicture is not null %}
+			{% set mainPicUrl = 'uploads/pictures/' ~ trick.mainPicture.filename %}
+		{% else %}
+			{% set mainPicUrl = 'img/visit-almaty-wN4D-mVR7fE-unsplash.jpg' %}
+		{% endif %}
+		<a href="{{ path('trick_show', {'group_slug': trick.trickGroup.slug, 'slug': trick.slug}) }}" class="w-100 h-0" style="max-width:100%; padding-top:70%; background: #DDD url({{ mainPicUrl }}) no-repeat center center; background-size:cover;" title="Picture of {{ trick.name }}"></a>
 		<div class="card-body p-0 d-flex flex-column justify-content-between">
 			<div class="d-flex align-items-start">
 				<h2 class="card-title h5 flex-grow-1 p-2 mb-1">

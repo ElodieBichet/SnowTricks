@@ -98,7 +98,6 @@ class TrickController extends AbstractController
                 }
             }
 
-
             $em->persist($trick);
             $em->flush();
 
@@ -184,14 +183,13 @@ class TrickController extends AbstractController
                     $picture->setFilename($pictureFilename);
                 }
 
-
                 // Use the first uploaded picture as main picture, if none is defined
                 if ($trick->getMainPicture() === NULL) {
                     $trick->setMainPicture($picture);
                 }
             }
 
-            // if mainpicture is NULL or does not make part of trick pictures (for example if the picture has just been deleted)
+            // if mainpicture is not one of the trick pictures (for example if the picture has just been removed), use the first picture (or null)
             if (!in_array($trick->getMainPicture(), $trick->getPictures()->getValues())) {
                 $trick->setMainPicture($trick->getPictures()->get(0));
             }
