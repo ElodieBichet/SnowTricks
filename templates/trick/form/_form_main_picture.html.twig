@@ -7,13 +7,13 @@
 			<div class="modal-body">
 
 				<p>Choose the main picture for this trick:</p>
-
-				<div id="mainPicPreview" class="float-sm-end col-8 col-sm-4 mx-auto">
-					<img src="{{ asset('uploads/pictures/' ~ trick.mainPicture.filename) }}" class="img-fluid" alt="main picture preview">
-				</div>
+				{% if trick.mainPicture %}
+					<div id="mainPicPreview" class="float-sm-end col-8 col-sm-4 mx-auto">
+						<img src="{{ asset('uploads/pictures/' ~ trick.mainPicture.filename) }}" class="img-fluid" alt="main picture preview">
+					</div>
+				{% endif %}
 
 				{{ form_widget(form.mainPicture) }}
-
 
 			</div>
 			<div class="modal-footer">
