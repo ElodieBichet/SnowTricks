@@ -4,7 +4,7 @@
 		<div class="d-flex align-items-start">
 			{{ include('trick/_back_to_list.html.twig') }}
 			<span class="flex-grow-1"></span>
-			{% if trick.pictures | length > 0 %}
+			{% if trick.id and trick.pictures | length > 0 %}
 				<button type="button" class="btn btn-primary me-1 mt-1" title="Change the main picture for {{ trick.name }}" data-bs-toggle="modal" data-bs-target="#modalEdit-mainPicture">
 					<i class="fas fa-pencil-alt"></i>
 				</button>

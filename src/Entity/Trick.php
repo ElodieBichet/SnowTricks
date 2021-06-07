@@ -74,6 +74,7 @@ class Trick
 
     /**
      * @ORM\OneToOne(targetEntity=Picture::class)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $mainPicture;
 

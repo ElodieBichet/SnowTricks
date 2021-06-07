@@ -71,10 +71,8 @@ class PictureFixtures extends Fixture
         $manager->flush();
 
         foreach ($tricks as $trick) {
-            if ($faker->boolean(80)) {
-                $picture = $faker->randomElement($trick->getPictures());
-                $trick->setMainPicture($picture);
-            }
+            $picture = $faker->randomElement($trick->getPictures());
+            $trick->setMainPicture($picture);
         }
 
         $manager->flush();
