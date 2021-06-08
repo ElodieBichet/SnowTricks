@@ -5,7 +5,7 @@
 		{% else %}
 			{% set mainPicUrl = 'img/visit-almaty-wN4D-mVR7fE-unsplash.jpg' %}
 		{% endif %}
-		<a href="{{ path('trick_show', {'group_slug': trick.trickGroup.slug, 'slug': trick.slug}) }}" class="w-100 h-0" style="max-width:100%; padding-top:70%; background: #DDD url({{ mainPicUrl }}) no-repeat center center; background-size:cover;" title="Picture of {{ trick.name }}"></a>
+		<a href="{{ path('trick_show', {'group_slug': trick.trickGroup.slug, 'slug': trick.slug}) }}" class="ratio" style="--bs-aspect-ratio:70%; background: #DDD url({{ mainPicUrl }}) no-repeat center center; background-size:cover;" title="Picture of {{ trick.name }}"></a>
 		<div class="card-body p-0 d-flex flex-column justify-content-between">
 			<div class="d-flex align-items-start">
 				<h2 class="card-title h5 flex-grow-1 p-2 mb-1">
