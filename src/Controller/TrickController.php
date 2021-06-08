@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Entity\Message;
 use App\Entity\Picture;
 use App\Form\TrickType;
@@ -97,6 +98,13 @@ class TrickController extends AbstractController
                     $trick->setMainPicture($picture);
                 }
             }
+
+            // $videoForms = $form->get('videos');
+
+            // foreach ($videoForms as $videoForm) {
+            //     /** @var Video $video */
+            //     $video = $videoForm->getData();
+            // }
 
             $em->persist($trick);
             $em->flush();

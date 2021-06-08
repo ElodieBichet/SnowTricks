@@ -1,0 +1,74 @@
+<section id="medias" class="mx-auto my-3">
+
+	<h2 class="h4">
+		<i class="fas fa-photo-video"></i>
+		{{ trick.pictures | length }}
+		image{{ (trick.pictures | length) > 1 ? 's' : '' }}
+		&amp;
+		{{ trick.videos | length }}
+		video{{ (trick.videos | length) > 1 ? 's' : '' }}
+	</h2>
+
+	{% if (trick.pictures | length) + (trick.videos | length) <= 0 %}
+
+		<p class="mx-2 my-3">There is no picture or video to this trick.</p>
+
+	{% else %}
+
+		<div class="d-md-none text-center">
+			<button class="btn btn-info collapse show" id="showBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Show media</button>
+			<button class="btn btn-info collapse" id="hideBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Hide media</button>
+		</div>
+
+		<div class="d-md-block collapse" id="medias">
+
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-start">
+
+				{% for picture in trick.pictures %}
+					<div class="col position-relative">
+						<div class="ratio ratio-4x3 mt-3">
+							<div class="btn" style="background: transparent url({{ asset('uploads/pictures/' ~ picture.filename) }}) no-repeat center center; background-size:cover;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ picture.title | capitalize }}"></div>
+						</div>
+					</div>
+				{% endfor %}
+
+				{% for video in trick.videos %}
+					<div class="col position-relative">
+						<div class="ratio ratio-4x3 mt-3 bg-dark">
+							<iframe src="https://www.youtube.com/embed/CA5bURVJ5zk?controls=2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ video.title | capitalize }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div>
+					</div>
+				{% endfor %}
+
+				<!-- <div class="col position-relative">
+																					<div
+																						class="ratio ratio-4x3 mt-3 bg-dark">
+																						{# https://youtu.be/CA5bURVJ5zk #}
+																						<iframe src="https://www.youtube.com/embed/CA5bURVJ5zk?controls=2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+																					</div>
+																				</div>
+																
+																				<div class="col position-relative">
+																					<div
+																						class="ratio ratio-4x3 mt-3 bg-dark">
+																						{# https://dai.ly/x81c0a7 #}
+																						<iframe src="https://www.dailymotion.com/embed/video/x81c0a7" title="Dailymotion player" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+																					</div>
+																				</div>
+																
+																				<div class="col position-relative">
+																					<div
+																						class="ratio ratio-4x3 mt-3 bg-dark">
+																						{# https://vimeo.com/18364353 #}
+																						<iframe src="https://player.vimeo.com/video/18364353" title="Vimeo player" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+																					</div>
+																				</div> -->
+
+			</div>
+
+		</div>
+	{% endif %}
+
+</section>
+
+<script src="{{ asset('js/tooltip.js') }}"></script>

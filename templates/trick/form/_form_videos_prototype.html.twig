@@ -1,0 +1,41 @@
+<div class="ratio ratio-4x3 mt-3" style="background: #DDD">
+
+	<div class="text-end pt-1 pe-1">
+
+		<button type="button" class="btn btn-primary" title="Edit your new video" data-bs-toggle="modal" data-bs-target="#modalEdit-video-new__name__">
+			<i class="fas fa-pencil-alt"></i>
+			Edit your new video
+		</button>
+
+		<button type="button" class="btn btn-danger" data-remove-item="vidForm-new__name__" onclick="javascript:removeElement(document.getElementById(this.dataset.removeItem))">
+			<i class="fas fa-trash-alt"></i>
+		</button>
+	</div>
+
+</div>
+
+<div class="modal fade" id="modalEdit-video-new__name__" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add a new video</h5>
+			</div>
+			<div class="modal-body">
+
+				<input form="trick" type="hidden" id="{{ form.videos.vars.prototype.trick.vars.id }}" name="{{ form.videos.vars.prototype.trick.vars.full_name }}" value="{{ trick.id }}">
+				{% do form.videos.vars.prototype.trick.setRendered() %}
+				{{ form_row(form.videos.vars.prototype.title, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+				{{ form_row(form.videos.vars.prototype.videoUrl, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+
+			</div>
+			<div class="modal-footer">
+				<small>
+					<i class="fas fa-exclamation-circle text-warning"></i>
+					<i>Note that the new video is not saved until you save the trick</i>
+				</small>
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+					Add video</button>
+			</div>
+		</div>
+	</div>
+</div>

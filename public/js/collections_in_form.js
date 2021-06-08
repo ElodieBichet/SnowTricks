@@ -39,7 +39,7 @@ function addFormToCollection(collectionHolder) {
   // Display the form in the page in a new div
   let newFormItem = document.createElement('div');
   newFormItem.setAttribute('class', 'col position-relative ' + type);
-  newFormItem.setAttribute('id', 'pictureForm-new' + index);
+  newFormItem.setAttribute('id', type + 'Form-new' + index);
   newFormItem.innerHTML = newForm;
 
   // Get the last item of the collection type

@@ -1,0 +1,135 @@
+<section id="pictures" class="mx-auto my-3">
+
+	<h2 class="h4">
+		<i class="fas fa-photo-video"></i>
+		{{ trick.pictures | length }}
+		image{{ (trick.pictures | length) > 1 ? 's' : '' }}
+		{# &amp; {{ trick.videos | length }} video{{ (trick.videos | length) > 1 ? 's' : '' }} #}
+	</h2>
+
+
+	{% if trick.pictures | length <= 0 %}
+
+		<p class="mx-2 my-3">There is no picture to this trick.</p>
+
+	{% endif %}
+
+	{% for pictureForm in form.pictures %}
+		{% set hasError = false %}
+		{% for field in pictureForm.children %}
+			{% if field.vars.errors|length %}
+				{% set hasError = true %}
+			{% endif %}
+		{% endfor %}
+		{% if hasError %}
+			<div class="alert alert-dismissible alert-danger">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				<strong>Error on the picture
+					{{ pictureForm.vars.id }}</strong>
+				You must fix it and reupload all new picture files to be able to save the trick.
+			</div>
+		{% endif %}
+	{% endfor %}
+
+	<div class="d-md-none text-center">
+		<button class="btn btn-info collapse show" id="showBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Show media</button>
+		<button class="btn btn-info collapse" id="hideBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Hide media</button>
+	</div>
+
+	<div class="d-md-block collapse" id="medias">
+
+		{% set picturesPrototype %}
+		{{ include('trick/form/_form_pictures_prototype.html.twig') }}
+		{% endset %}
+
+		{% set videosPrototype %}
+		{{ include('trick/form/_form_videos_prototype.html.twig') }}
+		{% endset %}
+
+		<button type="button" class="add_item_link btn btn-outline-primary btn-sm rounded-pill" data-prototype="{{ picturesPrototype|e('html_attr') }}" data-collection-type="pic">
+			<i class="fa fa-plus"></i>
+			Add a picture
+			<i class="far fa-image"></i>
+		</button>
+
+		<button type="button" class="add_item_link btn btn-outline-primary btn-sm rounded-pill" data-prototype="{{ videosPrototype|e('html_attr') }}" data-collection-type="vid">
+			<i class="fa fa-plus"></i>
+			Add a video
+			<i class="fas fa-film"></i>
+		</button>
+
+		<div class="pictures row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-start">
+
+			<div class="d-none pic"></div>
+			{% for pictureForm in form.pictures %}
+
+				{{ include('trick/form/_form_pictures_item.html.twig') }}
+
+			{% endfor %}
+
+			<div class="d-none vid"></div>
+			{% for videoForm in form.videos %}
+
+				{{ include('trick/form/_form_videos_item.html.twig') }}
+
+			{% endfor %}
+
+			<!-- <div class="col position-relative vid">
+													<div class="ratio ratio-4x3 mt-3 bg-dark">
+									
+														<div class="text-end pt-1 pe-1" style="z-index:1000;">
+															<button type="button" class="btn btn-primary" title="Edit the video" data-bs-toggle="modal" data-bs-target="#modalEdit-video">
+																<i class="fas fa-pencil-alt"></i>
+															</button>
+									
+															<button type="button" class="btn btn-danger" title="Delete the video" data-bs-toggle="modal" data-bs-target="#modalDelete-video">
+																<i class="fas fa-trash-alt"></i>
+															</button>
+														</div>
+									
+														{# https://youtu.be/CA5bURVJ5zk #}
+														<iframe src="https://www.youtube.com/embed/CA5bURVJ5zk?controls=2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+													</div>
+												</div>
+									
+												<div class="col position-relative vid">
+													<div class="ratio ratio-4x3 mt-3 bg-dark">
+									
+														<div class="text-end pt-1 pe-1" style="z-index:1000;">
+															<button type="button" class="btn btn-primary" title="Edit the video" data-bs-toggle="modal" data-bs-target="#modalEdit-video">
+																<i class="fas fa-pencil-alt"></i>
+															</button>
+									
+															<button type="button" class="btn btn-danger" title="Delete the video" data-bs-toggle="modal" data-bs-target="#modalDelete-video">
+																<i class="fas fa-trash-alt"></i>
+															</button>
+														</div>
+									
+														{# https://dai.ly/x81c0a7 #}
+														<iframe src="https://www.dailymotion.com/embed/video/x81c0a7" title="Dailymotion player" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+													</div>
+												</div>
+									
+												<div class="col position-relative vid">
+													<div class="ratio ratio-4x3 mt-3 bg-dark">
+									
+														<div class="text-end pt-1 pe-1" style="z-index:1000;">
+															<button type="button" class="btn btn-primary" title="Edit the video" data-bs-toggle="modal" data-bs-target="#modalEdit-video">
+																<i class="fas fa-pencil-alt"></i>
+															</button>
+									
+															<button type="button" class="btn btn-danger" title="Delete the video" data-bs-toggle="modal" data-bs-target="#modalDelete-video">
+																<i class="fas fa-trash-alt"></i>
+															</button>
+														</div>
+									
+														{# https://vimeo.com/18364353 #}
+														<iframe src="https://player.vimeo.com/video/18364353" title="Vimeo player" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+													</div>
+												</div> -->
+
+
+		</div>
+	</div>
+
+</section>
