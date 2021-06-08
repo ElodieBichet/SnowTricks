@@ -1,4 +1,4 @@
-<div class="col position-relative" id="pictureForm-{{ pictureForm.vars.id }}">
+<div class="col position-relative pic" id="pictureForm-{{ pictureForm.vars.id }}">
 	<div class="ratio ratio-4x3 mt-3" style="background: #DDD url({{ asset('uploads/pictures/' ~ pictureForm.vars.data.filename) }}) no-repeat center center; background-size:cover;" title="{{ pictureForm.vars.data.title | capitalize }}">
 
 		<div class="text-end pt-1 pe-1">
@@ -34,7 +34,7 @@
 						<i>Note that picture will not be removed until you save the trick</i>
 					</small><br>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-					<button class="removePicture btn btn-danger" data-bs-dismiss="modal" data-picture="pictureForm-{{ pictureForm.vars.id }}">
+					<button class="removeItem btn btn-danger" data-bs-dismiss="modal" data-remove-item="pictureForm-{{ pictureForm.vars.id }}">
 						<i class="fas fa-trash-alt"></i>
 						Delete</button>
 				</div>
