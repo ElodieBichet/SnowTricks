@@ -23,12 +23,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/all", name="user")
+     * @Route("/admin", name="user_admin")
      * @IsGranted("ROLE_ADMIN", message="You have to be authenticated as an admin to see this page")
      */
     public function index(): Response
     {
-        return $this->render('user/index.html.twig', [
+        return $this->render('admin/user/index.html.twig', [
             'users' => $this->userRepository->findAll(),
         ]);
     }

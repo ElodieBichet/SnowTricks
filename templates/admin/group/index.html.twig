@@ -1,0 +1,35 @@
+{% extends 'admin/home.html.twig' %}
+
+{% block title %}Groups of tricks
+{% endblock %}
+
+{% block body %}
+
+	<h2>Group of tricks</h2>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Tricks</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for group in groups %}
+				<tr>
+					<td>{{ group.id }}</td>
+					<td>{{ group.name }}</td>
+					<td>{{ group.tricks | length }}
+						<i class="far fa-clipboard"></i>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="7">no group found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

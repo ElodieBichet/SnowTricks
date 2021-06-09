@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome in admin
+{% endblock %}
+
+
+{% block topbanner %}
+	<h1 class="mx-5">Manage your content</h1>
+
+	<div class="row my-4 mx-5">
+		<a class="btn btn-primary col" href="{{ path('trick_admin') }}">
+			<i class="far fa-clipboard"></i>
+			Manage tricks</a>
+		<a class="btn btn-primary col" href="{{ path('message_admin') }}">
+			<i class="far fa-comments"></i>
+			Manage messages</a>
+		<a class="btn btn-primary col" href="{{ path('user_admin') }}">
+			<i class="far fa-user"></i>
+			Manage users</a>
+		<a class="btn btn-primary col" href="{{ path('group_admin') }}">
+			<i class="far fa-object-group"></i>
+			Manage groups</a>
+		<a class="btn btn-primary col" href="{{ path('picture_admin') }}">
+			<i class="far fa-image"></i>
+			Manage pictures</a>
+		<a class="btn btn-primary col" href="{{ path('video_admin') }}">
+			<i class="fas fa-film"></i>
+			Manage videos</a>
+	</div>
+{% endblock %}
+
+{% block body %}
+
+	<p>Welcome in your admin interface.</p>
+
+	<p>{{ tricks | length }}
+		tricks in
+		{{ groups | length }}
+		groups</p>
+	<p>{{ messages | length }}
+		messages in tricks discussions</p>
+	<p>{{ users | length }}
+		users to add ans edit the content</p>
+	<p>{{ pictures | length }}
+		pictures and
+		{{ videos | length }}
+		videos to illustrate the tricks</p>
+
+{% endblock %}

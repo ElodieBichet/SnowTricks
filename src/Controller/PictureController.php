@@ -29,12 +29,13 @@ class PictureController extends AbstractController
     }
 
     /**
-     * @Route("/all", name="picture_index")
+     * @Route("/admin", name="picture_admin")
+     * @IsGranted("ROLE_ADMIN", message="You have to be authenticated as an admin to see this page")
      */
     public function index(): Response
     {
-        return $this->render('picture/index.html.twig', [
-            'controller_name' => 'PictureController',
+        return $this->render('admin/picture/index.html.twig', [
+            'pictures' => $this->pictureRepository->findAll(),
         ]);
     }
 
