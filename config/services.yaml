@@ -39,3 +39,6 @@ services:
     
     App\Twig\TwigVideoExtension:
         tags: ['twig.extension']
+    
+    App\Twig\TwigAvatarExtension:
+        tags: ['twig.extension']

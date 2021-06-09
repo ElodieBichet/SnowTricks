@@ -1,5 +1,5 @@
 <div class="col position-relative vid" id="vidForm-{{ videoForm.vars.id }}">
-	<div class="ratio ratio-4x3 mt-3 bg-dark" title="{{ videoForm.vars.data.title | capitalize }}">
+	<div class="ratio ratio-4x3 mt-3 bg-dark" title="{{ videoForm.vars.data.title | capitalize }}" data-bs-toggle="tooltip" data-bs-placement="top">
 
 		<div class="text-end pt-1 pe-1" style="z-index:1000;">
 			<button type="button" class="btn btn-primary" title="Edit the video '{{ videoForm.vars.data.title | capitalize }}'" data-bs-toggle="modal" data-bs-target="#modalEdit-video{{ videoForm.vars.id }}">

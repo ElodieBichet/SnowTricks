@@ -1,5 +1,5 @@
 <div class="col position-relative pic" id="picForm-{{ pictureForm.vars.id }}">
-	<div class="ratio ratio-4x3 mt-3" style="background: #DDD url({{ asset('uploads/pictures/' ~ pictureForm.vars.data.filename) }}) no-repeat center center; background-size:cover;" title="{{ pictureForm.vars.data.title | capitalize }}">
+	<div class="ratio ratio-4x3 mt-3" style="background: #DDD url({{ asset('uploads/pictures/' ~ pictureForm.vars.data.filename) }}) no-repeat center center; background-size:cover;" title="{{ pictureForm.vars.data.title | capitalize }}" data-bs-toggle="tooltip" data-bs-placement="top">
 
 		<div class="text-end pt-1 pe-1">
 			<button type="button" class="btn btn-primary" title="Edit the picture '{{ pictureForm.vars.data.title | capitalize }}'" data-bs-toggle="modal" data-bs-target="#modalEdit-picture{{ pictureForm.vars.id }}">

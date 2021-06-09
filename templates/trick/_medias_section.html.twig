@@ -27,7 +27,7 @@
 				{% for picture in trick.pictures %}
 					<div class="col position-relative">
 						<div class="ratio ratio-4x3 mt-3">
-							<div class="btn" style="background: transparent url({{ asset('uploads/pictures/' ~ picture.filename) }}) no-repeat center center; background-size:cover;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ picture.title | capitalize }}"></div>
+							<div style="background: transparent url({{ asset('uploads/pictures/' ~ picture.filename) }}) no-repeat center center; background-size:cover;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ picture.title | capitalize }}"></div>
 						</div>
 					</div>
 				{% endfor %}

@@ -24,11 +24,15 @@
 				<tr>
 					<td>{{ user.id }}</td>
 					<td>
-						<img src="{{ user.avatar }}?s=50&amp;d=retro" alt="{{ user.fullname }}">
+						{{ user | avatar(50) }}
 					</td>
 					<td>{{ user.fullname }}</td>
 					<td>{{ user.email }}</td>
-					<td>{{ user.isVerified }}</td>
+					<td>
+						<span class="badge rounded-pill bg-{{ (user.isVerified == 1) ? 'success' : 'warning' }}">
+							{{ (user.isVerified == 1) ? 'YES' : 'NO' }}
+						</span>
+					</td>
 					<td>{{ user.roles | join(', ') }}</td>
 					<td>{{ user.messages | length }}
 						<i class="far fa-comments"></i>
