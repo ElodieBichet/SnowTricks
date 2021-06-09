@@ -50,7 +50,7 @@ class HomeController extends AbstractController
     return $this->render('admin/home.html.twig', [
       'tricks' => $this->trickRepository->findAll(),
       'messages' => $this->messageRepository->findAll(),
-      'users' => $this->userRepository->findAll(),
+      'users' => $this->userRepository->findBy(['isVerified' => 1]),
       'groups' => $this->groupRepository->findAll(),
       'pictures' => $this->pictureRepository->findAll(),
       'videos' => $this->videoRepository->findAll()

@@ -5,45 +5,58 @@
 
 
 {% block topbanner %}
-	<h1 class="mx-5">Manage your content</h1>
+	<h1 class="mx-5 my-3">Manage your content</h1>
 
-	<div class="row my-4 mx-5">
-		<a class="btn btn-primary col" href="{{ path('trick_admin') }}">
+	<div class="row my-4 mx-5 justify-content-around">
+		<a class="btn btn-primary col-md-2 col-6" href="{{ path('trick_admin') }}">
 			<i class="far fa-clipboard"></i>
-			Manage tricks</a>
-		<a class="btn btn-primary col" href="{{ path('message_admin') }}">
+			<span class="d-none d-md-inline">Manage
+			</span>tricks</a>
+		<a class="btn btn-primary col-md-2 col-6" href="{{ path('message_admin') }}">
 			<i class="far fa-comments"></i>
-			Manage messages</a>
-		<a class="btn btn-primary col" href="{{ path('user_admin') }}">
+			<span class="d-none d-md-inline">Manage
+			</span>messages</a>
+		<a class="btn btn-primary col-md-2 col-6" href="{{ path('user_admin') }}">
 			<i class="far fa-user"></i>
-			Manage users</a>
-		<a class="btn btn-primary col" href="{{ path('group_admin') }}">
+			<span class="d-none d-md-inline">Manage
+			</span>users</a>
+		<a class="btn btn-primary col-md-2 col-6" href="{{ path('group_admin') }}">
 			<i class="far fa-object-group"></i>
-			Manage groups</a>
-		<a class="btn btn-primary col" href="{{ path('picture_admin') }}">
+			<span class="d-none d-md-inline">Manage
+			</span>groups</a>
+		<a class="btn btn-primary col-md-2 col-6" href="{{ path('picture_admin') }}">
 			<i class="far fa-image"></i>
-			Manage pictures</a>
-		<a class="btn btn-primary col" href="{{ path('video_admin') }}">
+			<span class="d-none d-md-inline">Manage
+			</span>pictures</a>
+		<a class="btn btn-primary col-md-2 col-6" href="{{ path('video_admin') }}">
 			<i class="fas fa-film"></i>
-			Manage videos</a>
+			<span class="d-none d-md-inline">Manage
+			</span>videos</a>
 	</div>
 {% endblock %}
 
 {% block body %}
 
-	<p>Welcome in your admin interface.</p>
+	<p>Welcome in your admin interface.<br>
+		Here are some figures about he website:</p>
 
-	<p>{{ tricks | length }}
-		tricks in
-		{{ groups | length }}
-		groups</p>
-	<p>{{ messages | length }}
-		messages in tricks discussions</p>
-	<p>{{ users | length }}
-		users to add ans edit the content</p>
-	<p>{{ pictures | length }}
-		pictures and
-		{{ videos | length }}
-		videos to illustrate the tricks</p>
+	<ul>
+		<li class="mb-2">
+			<strong>{{ tricks | length }}</strong>
+			tricks in
+			<strong>{{ groups | length }}</strong>
+			groups</li>
+		<li class="mb-2">
+			<strong>{{ messages | length }}</strong>
+			messages in tricks discussions</li>
+		<li class="mb-2">
+			<strong>{{ users | length }}</strong>
+			approved users to add and edit the content</li>
+		<li class="mb-2">
+			<strong>{{ pictures | length }}</strong>
+			pictures and
+			<strong>{{ videos | length }}</strong>
+			videos to illustrate the tricks</li>
+	</ul>
 
 {% endblock %}
