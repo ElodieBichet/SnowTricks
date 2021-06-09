@@ -40,6 +40,7 @@ class PictureController extends AbstractController
 
     /**
      * @Route("/new", name="picture_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER", message="You have to be authenticated to create a picture")
      */
     public function new(Request $request, EntityManagerInterface $em, FileUploaderService $fileUploader): Response
     {

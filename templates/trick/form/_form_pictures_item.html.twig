@@ -1,7 +1,7 @@
-<div class="col position-relative" id="pictureForm-{{ pictureForm.vars.id }}">
-	<div class="w-100 h-0 mt-3" style="max-width:100%; padding-top:70%; background: #DDD url({{ asset('uploads/pictures/' ~ pictureForm.vars.data.filename) }}) no-repeat center center; background-size:cover;" title="{{ pictureForm.vars.data.title | capitalize }}">
+<div class="col position-relative pic" id="picForm-{{ pictureForm.vars.id }}">
+	<div class="ratio ratio-4x3 mt-3" style="background: #DDD url({{ asset('uploads/pictures/' ~ pictureForm.vars.data.filename) }}) no-repeat center center; background-size:cover;" title="{{ pictureForm.vars.data.title | capitalize }}">
 
-		<div class="position-absolute mt-3 me-2 pt-1 pe-2" style="top: 0; right:0;">
+		<div class="text-end pt-1 pe-1">
 			<button type="button" class="btn btn-primary" title="Edit the picture '{{ pictureForm.vars.data.title | capitalize }}'" data-bs-toggle="modal" data-bs-target="#modalEdit-picture{{ pictureForm.vars.id }}">
 				<i class="fas fa-pencil-alt"></i>
 			</button>
@@ -34,7 +34,7 @@
 						<i>Note that picture will not be removed until you save the trick</i>
 					</small><br>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-					<button class="removePicture btn btn-danger" data-bs-dismiss="modal" data-picture="pictureForm-{{ pictureForm.vars.id }}">
+					<button class="removeItem btn btn-danger" data-bs-dismiss="modal" data-remove-item="picForm-{{ pictureForm.vars.id }}">
 						<i class="fas fa-trash-alt"></i>
 						Delete</button>
 				</div>

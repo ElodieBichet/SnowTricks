@@ -1,37 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Get the html element that holds the collection of pictures
-  let picturesCollectionHolder = document.getElementById('picturesList');
-  // count the current form inputs we have (e.g. 2), use that as the new index when inserting a new item (e.g. 2)
-  picturesCollectionHolder.dataset.index = picturesCollectionHolder.querySelectorAll('div.col.position-relative').length;
 
-  document.querySelector('.add_item_link').addEventListener("click", e => {
-    let collectionHolderId = e.currentTarget.dataset.collectionHolderId;
-    // add a new picture form (see next code block)
-    addFormToCollection(collectionHolderId);
+  document.querySelectorAll('.add_item_link').forEach(item => {
+    // init index
+    item.dataset.index = document.querySelectorAll('div.' + item.dataset.collectionType).length;
+    item.addEventListener("click", e => {
+      let collectionHolder = e.currentTarget;
+      // add a new collection form (see next code block)
+      addFormToCollection(collectionHolder);
+    })
   });
 
-  document.querySelectorAll('.removePicture').forEach(item => {
+  document.querySelectorAll('.removeItem').forEach(item => {
     item.addEventListener('click', e => {
-      let el = document.getElementById(e.target.dataset.picture);
+      let el = document.getElementById(e.target.dataset.removeItem);
       removeElement(el);
     })
   });
 
 });
 
-function addFormToCollection(collectionHolderId) {
-  // Get the html element that holds the collection of pictures
-  let collectionHolder = document.getElementById(collectionHolderId);
+function addFormToCollection(collectionHolder) {
 
   // Get the data-prototype explained earlier
   let prototype = collectionHolder.dataset.prototype;
-  // get the new index
+  // Get the new index
   let index = collectionHolder.dataset.index;
+  let type = collectionHolder.dataset.collectionType;
 
   let newForm = prototype;
-  // Replace '__name__label__' in the prototype's HTML to
-  // instead be a number based on how many items we have
-  // newForm = newForm.replace(/__name__label__/g, index);
 
   // Replace '__name__' in the prototype's HTML to
   // instead be a number based on how many items we have
@@ -42,11 +38,15 @@ function addFormToCollection(collectionHolderId) {
 
   // Display the form in the page in a new div
   let newFormItem = document.createElement('div');
-  newFormItem.setAttribute('class', 'col position-relative');
-  newFormItem.setAttribute('id', 'pictureForm-new' + index);
+  newFormItem.setAttribute('class', 'col position-relative ' + type);
+  newFormItem.setAttribute('id', type + 'Form-new' + index);
   newFormItem.innerHTML = newForm;
-  // Add the new form at the end of the list
-  collectionHolder.append(newFormItem);
+
+  // Get the last item of the collection type
+  let all = document.querySelectorAll('div.' + type);
+  let last = all[all.length - 1];
+  // Add the new form after this last item
+  last.after(newFormItem);
 }
 
 function removeElement(el) {

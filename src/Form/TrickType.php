@@ -5,11 +5,9 @@ namespace App\Form;
 use App\Entity\Group;
 use App\Entity\Trick;
 use App\Entity\Picture;
+use App\Form\VideoType;
 use App\Form\PictureType;
-use Doctrine\ORM\EntityRepository;
 use App\Repository\PictureRepository;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -28,6 +26,13 @@ class TrickType extends AbstractType
             ])
             ->add('pictures', CollectionType::class, [
                 'entry_type' => PictureType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true
+            ])
+            ->add('videos', CollectionType::class, [
+                'entry_type' => VideoType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,

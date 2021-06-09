@@ -4,7 +4,9 @@
 		<i class="fas fa-photo-video"></i>
 		{{ trick.pictures | length }}
 		image{{ (trick.pictures | length) > 1 ? 's' : '' }}
-		{# &amp; {{ trick.videos | length }} video{{ (trick.videos | length) > 1 ? 's' : '' }} #}
+		&amp;
+		{{ trick.videos | length }}
+		video{{ (trick.videos | length) > 1 ? 's' : '' }}
 	</h2>
 
 
@@ -31,6 +33,23 @@
 		{% endif %}
 	{% endfor %}
 
+	{% for videoForm in form.videos %}
+		{% set hasError = false %}
+		{% for field in videoForm.children %}
+			{% if field.vars.errors|length %}
+				{% set hasError = true %}
+			{% endif %}
+		{% endfor %}
+		{% if hasError %}
+			<div class="alert alert-dismissible alert-danger">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				<strong>Error on the video
+					{{ videoForm.vars.id }}</strong>
+				You must fix it and reupload all new picture files to be able to save the trick.
+			</div>
+		{% endif %}
+	{% endfor %}
+
 	<div class="d-md-none text-center">
 		<button class="btn btn-info collapse show" id="showBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Show media</button>
 		<button class="btn btn-info collapse" id="hideBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Hide media</button>
@@ -39,22 +58,38 @@
 	<div class="d-md-block collapse" id="medias">
 
 		{% set picturesPrototype %}
-
 		{{ include('trick/form/_form_pictures_prototype.html.twig') }}
-
 		{% endset %}
 
-		<button type="button" class="add_item_link btn btn-outline-primary btn-sm rounded-pill" data-collection-holder-id="picturesList">
+		{% set videosPrototype %}
+		{{ include('trick/form/_form_videos_prototype.html.twig') }}
+		{% endset %}
+
+		<button type="button" class="add_item_link btn btn-outline-primary btn-sm rounded-pill" data-prototype="{{ picturesPrototype|e('html_attr') }}" data-collection-type="pic">
 			<i class="fa fa-plus"></i>
 			Add a picture
 			<i class="far fa-image"></i>
 		</button>
 
-		<div id="picturesList" class="pictures row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-start" data-prototype="{{ picturesPrototype|e('html_attr') }}">
+		<button type="button" class="add_item_link btn btn-outline-primary btn-sm rounded-pill" data-prototype="{{ videosPrototype|e('html_attr') }}" data-collection-type="vid">
+			<i class="fa fa-plus"></i>
+			Add a video
+			<i class="fas fa-film"></i>
+		</button>
 
+		<div class="pictures row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-start">
+
+			<div class="d-none pic"></div>
 			{% for pictureForm in form.pictures %}
 
 				{{ include('trick/form/_form_pictures_item.html.twig') }}
+
+			{% endfor %}
+
+			<div class="d-none vid"></div>
+			{% for videoForm in form.videos %}
+
+				{{ include('trick/form/_form_videos_item.html.twig') }}
 
 			{% endfor %}
 

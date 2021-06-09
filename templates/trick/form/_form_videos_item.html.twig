@@ -1,0 +1,69 @@
+<div class="col position-relative vid" id="vidForm-{{ videoForm.vars.id }}">
+	<div class="ratio ratio-4x3 mt-3 bg-dark" title="{{ videoForm.vars.data.title | capitalize }}">
+
+		<div class="text-end pt-1 pe-1" style="z-index:1000;">
+			<button type="button" class="btn btn-primary" title="Edit the video '{{ videoForm.vars.data.title | capitalize }}'" data-bs-toggle="modal" data-bs-target="#modalEdit-video{{ videoForm.vars.id }}">
+				<i class="fas fa-pencil-alt"></i>
+			</button>
+
+			<button type="button" class="btn btn-danger" title="Delete the video '{{ videoForm.vars.data.title | capitalize }}'" data-bs-toggle="modal" data-bs-target="#modalDelete-video{{ videoForm.vars.id }}">
+				<i class="fas fa-trash-alt"></i>
+			</button>
+		</div>
+
+		<iframe src="{{ videoForm.vars.data.videoUrl | embedUrl }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ videoForm.vars.data.title | capitalize }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+	</div>
+
+	<div class="modal fade" id="modalDelete-video{{ videoForm.vars.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Delete video #{{ videoForm.vars.data.id }}</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Are your sure you want to permanently delete this video?
+				</div>
+				<div class="modal-footer">
+					<small>
+						<i class="fas fa-exclamation-circle text-warning"></i>
+						<i>Note that video will not be removed until you save the trick</i>
+					</small><br>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<button class="removeItem btn btn-danger" data-bs-dismiss="modal" data-remove-item="vidForm-{{ videoForm.vars.id }}">
+						<i class="fas fa-trash-alt"></i>
+						Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="modalEdit-video{{ videoForm.vars.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Edit video #{{ videoForm.vars.data.id }}</h5>
+				</div>
+				<div class="modal-body">
+					<input form="trick" type="hidden" id="{{ videoForm.trick.vars.id }}" name="{{ videoForm.trick.vars.full_name }}" value="{{ videoForm.trick.vars.value }}">
+					{% do videoForm.trick.setRendered() %}
+					{{ form_row(videoForm.title, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+					{{ form_row(videoForm.videoUrl, {'attr': {'form': 'trick', 'class': 'mb-3 mt-1'}}) }}
+				</div>
+				<div class="modal-footer">
+					<small>
+						<i class="fas fa-exclamation-circle text-warning"></i>
+						<i>Note that changes are not saved until you save the trick</i>
+					</small>
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+						Confirm changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
