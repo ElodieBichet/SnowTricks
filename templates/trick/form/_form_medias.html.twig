@@ -4,7 +4,9 @@
 		<i class="fas fa-photo-video"></i>
 		{{ trick.pictures | length }}
 		image{{ (trick.pictures | length) > 1 ? 's' : '' }}
-		{# &amp; {{ trick.videos | length }} video{{ (trick.videos | length) > 1 ? 's' : '' }} #}
+		&amp;
+		{{ trick.videos | length }}
+		video{{ (trick.videos | length) > 1 ? 's' : '' }}
 	</h2>
 
 
