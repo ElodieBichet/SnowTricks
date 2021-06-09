@@ -36,3 +36,6 @@ services:
     App\Service\FileUploaderService:
         arguments:
             $targetDirectory: '%pictures_directory%'
+    
+    App\Twig\TwigVideoExtension:
+        tags: ['twig.extension']

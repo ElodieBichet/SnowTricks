@@ -35,34 +35,10 @@
 				{% for video in trick.videos %}
 					<div class="col position-relative">
 						<div class="ratio ratio-4x3 mt-3 bg-dark">
-							<iframe src="https://www.youtube.com/embed/CA5bURVJ5zk?controls=2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ video.title | capitalize }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							<iframe src="{{ video.videoUrl | embedUrl }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ video.title | capitalize }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 						</div>
 					</div>
 				{% endfor %}
-
-				<!-- <div class="col position-relative">
-																					<div
-																						class="ratio ratio-4x3 mt-3 bg-dark">
-																						{# https://youtu.be/CA5bURVJ5zk #}
-																						<iframe src="https://www.youtube.com/embed/CA5bURVJ5zk?controls=2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-																					</div>
-																				</div>
-																
-																				<div class="col position-relative">
-																					<div
-																						class="ratio ratio-4x3 mt-3 bg-dark">
-																						{# https://dai.ly/x81c0a7 #}
-																						<iframe src="https://www.dailymotion.com/embed/video/x81c0a7" title="Dailymotion player" frameborder="0" allow="autoplay" allowfullscreen></iframe>
-																					</div>
-																				</div>
-																
-																				<div class="col position-relative">
-																					<div
-																						class="ratio ratio-4x3 mt-3 bg-dark">
-																						{# https://vimeo.com/18364353 #}
-																						<iframe src="https://player.vimeo.com/video/18364353" title="Vimeo player" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-																					</div>
-																				</div> -->
 
 			</div>
 

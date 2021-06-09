@@ -9,8 +9,10 @@
 			<button type="button" class="btn btn-danger" title="Delete the video '{{ videoForm.vars.data.title | capitalize }}'" data-bs-toggle="modal" data-bs-target="#modalDelete-video{{ videoForm.vars.id }}">
 				<i class="fas fa-trash-alt"></i>
 			</button>
-
 		</div>
+
+		<iframe src="{{ videoForm.vars.data.videoUrl | embedUrl }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ videoForm.vars.data.title | capitalize }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 	</div>
 

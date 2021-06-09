@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class VideoType extends AbstractType
 {
@@ -36,7 +37,13 @@ class VideoType extends AbstractType
             ])
             ->add('videoUrl', UrlType::class, [
                 'label' => 'Video URL from Youtube, Dailymotion or Vimeo',
-                'attr' => ['placeholder' => 'https://']
+                'attr' => ['placeholder' => 'https://'],
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '#(youtu)|(dai\.?ly)|(vimeo)#',
+                        'message' => 'The video URL must match with one of these video platforms: Youtube, Dailymotion, Vimeo'
+                    ])
+                ]
             ])
             ->add('trick', EntityType::class, [
                 'placeholder' => '-- Choose a trick --',

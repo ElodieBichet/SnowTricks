@@ -31,6 +31,23 @@
 		{% endif %}
 	{% endfor %}
 
+	{% for videoForm in form.videos %}
+		{% set hasError = false %}
+		{% for field in videoForm.children %}
+			{% if field.vars.errors|length %}
+				{% set hasError = true %}
+			{% endif %}
+		{% endfor %}
+		{% if hasError %}
+			<div class="alert alert-dismissible alert-danger">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				<strong>Error on the video
+					{{ videoForm.vars.id }}</strong>
+				You must fix it and reupload all new picture files to be able to save the trick.
+			</div>
+		{% endif %}
+	{% endfor %}
+
 	<div class="d-md-none text-center">
 		<button class="btn btn-info collapse show" id="showBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Show media</button>
 		<button class="btn btn-info collapse" id="hideBtn" type="button" data-bs-toggle="collapse" data-bs-target="#medias, #hideBtn, #showBtn" aria-expanded="false" aria-controls="medias" style="transition-delay: -1s">Hide media</button>
@@ -73,61 +90,6 @@
 				{{ include('trick/form/_form_videos_item.html.twig') }}
 
 			{% endfor %}
-
-			<!-- <div class="col position-relative vid">
-													<div class="ratio ratio-4x3 mt-3 bg-dark">
-									
-														<div class="text-end pt-1 pe-1" style="z-index:1000;">
-															<button type="button" class="btn btn-primary" title="Edit the video" data-bs-toggle="modal" data-bs-target="#modalEdit-video">
-																<i class="fas fa-pencil-alt"></i>
-															</button>
-									
-															<button type="button" class="btn btn-danger" title="Delete the video" data-bs-toggle="modal" data-bs-target="#modalDelete-video">
-																<i class="fas fa-trash-alt"></i>
-															</button>
-														</div>
-									
-														{# https://youtu.be/CA5bURVJ5zk #}
-														<iframe src="https://www.youtube.com/embed/CA5bURVJ5zk?controls=2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-													</div>
-												</div>
-									
-												<div class="col position-relative vid">
-													<div class="ratio ratio-4x3 mt-3 bg-dark">
-									
-														<div class="text-end pt-1 pe-1" style="z-index:1000;">
-															<button type="button" class="btn btn-primary" title="Edit the video" data-bs-toggle="modal" data-bs-target="#modalEdit-video">
-																<i class="fas fa-pencil-alt"></i>
-															</button>
-									
-															<button type="button" class="btn btn-danger" title="Delete the video" data-bs-toggle="modal" data-bs-target="#modalDelete-video">
-																<i class="fas fa-trash-alt"></i>
-															</button>
-														</div>
-									
-														{# https://dai.ly/x81c0a7 #}
-														<iframe src="https://www.dailymotion.com/embed/video/x81c0a7" title="Dailymotion player" frameborder="0" allow="autoplay" allowfullscreen></iframe>
-													</div>
-												</div>
-									
-												<div class="col position-relative vid">
-													<div class="ratio ratio-4x3 mt-3 bg-dark">
-									
-														<div class="text-end pt-1 pe-1" style="z-index:1000;">
-															<button type="button" class="btn btn-primary" title="Edit the video" data-bs-toggle="modal" data-bs-target="#modalEdit-video">
-																<i class="fas fa-pencil-alt"></i>
-															</button>
-									
-															<button type="button" class="btn btn-danger" title="Delete the video" data-bs-toggle="modal" data-bs-target="#modalDelete-video">
-																<i class="fas fa-trash-alt"></i>
-															</button>
-														</div>
-									
-														{# https://vimeo.com/18364353 #}
-														<iframe src="https://player.vimeo.com/video/18364353" title="Vimeo player" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-													</div>
-												</div> -->
-
 
 		</div>
 	</div>
