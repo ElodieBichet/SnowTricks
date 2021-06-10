@@ -1,5 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top p-1">
 	<a class="navbar-brand py-0" href="{{ path('homepage') }}"><img src="{{ asset('img/SnowTricks_logo.png') }}" alt="SnowTricks logo" style="height:3.8rem;"></a>
+	{% if is_granted('ROLE_ADMIN') %}
+		<div class="text-start flex-grow-1">
+			<a href="{{ path('admin_home') }}" class="btn btn-info btn-sm">
+				<i class="fas fa-cog"></i>
+				Admin</a>
+		</div>
+	{% endif %}
 	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -24,11 +31,6 @@
 					{% endif %}
 				</div>
 			</li>
-			{% if is_granted('ROLE_ADMIN') %}
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('admin_home') }}">Admin</a>
-				</li>
-			{% endif %}
 			{% if app.user %}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('security_logout') }}">Logout</a>

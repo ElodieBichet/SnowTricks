@@ -26,7 +26,7 @@ class PictureFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create();
+        $faker = Factory::create('en_US');
 
         $tricks = $this->trickRepository->findAll();
 
