@@ -1,3 +1,4 @@
 {
-  "intelephense.diagnostics.undefinedMethods": false
+  "intelephense.diagnostics.undefinedMethods": false,
+  "editor.formatOnSave": true
 }

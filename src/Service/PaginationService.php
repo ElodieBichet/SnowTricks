@@ -4,37 +4,37 @@ namespace App\Service;
 
 class PaginationService
 {
-  public function isLastPage($page, $lastPageNumber): bool
-  {
-    if ($page >= $lastPageNumber) {
-      return true;
+    public function isLastPage($page, $lastPageNumber): bool
+    {
+        if ($page >= $lastPageNumber) {
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-  }
+    public function getRenderOptions(string $itemsName, $queryBuilder, int $limit = 10, int $page = 1)
+    {
+        $offset = (int) ($page - 1) * $limit;
 
-  public function getRenderOptions(string $itemsName, $queryBuilder, int $limit = 10, int $page = 1)
-  {
-    $offset = (int) ($page - 1) * $limit;
+        $nbItems = count($queryBuilder->getQuery()->getResult());
+        $lastPageNumber = ceil($nbItems / $limit);
 
-    $nbItems = count($queryBuilder->getQuery()->getResult());
-    $lastPageNumber = ceil($nbItems / $limit);
+        $queryBuilder
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
 
-    $queryBuilder
-      ->setMaxResults($limit)
-      ->setFirstResult($offset);
+        $data = $queryBuilder->getQuery()->getResult();
 
-    $data = $queryBuilder->getQuery()->getResult();
+        $isLastPage = $this->isLastPage($page, $lastPageNumber);
 
-    $isLastPage = $this->isLastPage($page, $lastPageNumber);
+        $options = [
+            $itemsName => $data,
+            'page' => $page,
+            'limit' => $limit,
+            'isLastPage' => $isLastPage
+        ];
 
-    $options = [
-      $itemsName => $data,
-      'page' => $page,
-      'limit' => $limit,
-      'isLastPage' => $isLastPage
-    ];
-
-    return $options;
-  }
+        return $options;
+    }
 }

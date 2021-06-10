@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
-use App\Entity\Video;
 use App\Entity\Message;
 use App\Entity\Picture;
 use App\Form\TrickType;
@@ -26,10 +25,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TrickController extends AbstractController
 {
     protected $trickRepository;
+    protected $fileUploader;
 
-    public function __construct(TrickRepository $trickRepository)
+    public function __construct(TrickRepository $trickRepository, FileUploaderService $fileUploader)
     {
         $this->trickRepository = $trickRepository;
+        $this->fileUploader = $fileUploader;
     }
 
     /**
@@ -61,7 +62,7 @@ class TrickController extends AbstractController
      * @Route("/new", name="trick_new", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to create a new trick")
      */
-    public function new(Request $request, EntityManagerInterface $em, FileUploaderService $fileUploader): Response
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
@@ -72,39 +73,8 @@ class TrickController extends AbstractController
             $trick->setUpdatedAt($trick->getCreatedAt());
             $trick->setSlug((new Slugify())->slugify($trick->getName()));
 
-            $pictureForms = $form->get('pictures');
-
-            // Embed pictures forms
-            foreach ($pictureForms as $pictureForm) {
-
-                /** @var Picture $picture */
-                $picture = $pictureForm->getData();
-
-                /** @var UploadedFile $pictureFile */
-                $pictureFile = $pictureForm->get('filename')->getData();
-
-                // this condition is needed because the 'filename' field is not required
-                // so the image file must be processed only when a file is uploaded
-                if ($pictureFile) {
-                    // Upload the new file
-                    $pictureFilename = $fileUploader->upload($pictureFile);
-                    // updates the 'filename' property to store the image file name
-                    // instead of its contents
-                    $picture->setFilename($pictureFilename);
-                }
-
-                // Use the first uploaded picture as main picture
-                if ($trick->getMainPicture() === NULL) {
-                    $trick->setMainPicture($picture);
-                }
-            }
-
-            // $videoForms = $form->get('videos');
-
-            // foreach ($videoForms as $videoForm) {
-            //     /** @var Video $video */
-            //     $video = $videoForm->getData();
-            // }
+            // Add pictures forms
+            $this->embedPictureForms($form, $trick);
 
             $em->persist($trick);
             $em->flush();
@@ -159,7 +129,7 @@ class TrickController extends AbstractController
      * @Route("/{id<\d+>}/edit", name="trick_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to edit a trick")
      */
-    public function edit(Request $request, Trick $trick, EntityManagerInterface $em, FileUploaderService $fileUploader): Response
+    public function edit(Request $request, Trick $trick, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
@@ -168,34 +138,8 @@ class TrickController extends AbstractController
             $trick->setUpdatedAt(new \DateTime());
             $trick->setSlug((new Slugify())->slugify($trick->getName()));
 
-            $pictureForms = $form->get('pictures');
-
-            // Embed pictures forms
-            foreach ($pictureForms as $pictureForm) {
-
-                /** @var Picture $picture */
-                $picture = $pictureForm->getData();
-
-                /** @var UploadedFile $pictureFile */
-                $pictureFile = $pictureForm->get('filename')->getData();
-
-                // this condition is needed because the 'filename' field is not required
-                // so the image file must be processed only when a file is uploaded
-                if ($pictureFile) {
-                    // Upload the new file
-                    $pictureFilename = $fileUploader->upload($pictureFile);
-                    // Remove the old file
-                    if ($picture->getFilename()) $fileUploader->remove($picture->getFilename());
-                    // updates the 'filename' property to store the image file name
-                    // instead of its contents
-                    $picture->setFilename($pictureFilename);
-                }
-
-                // Use the first uploaded picture as main picture, if none is defined
-                if ($trick->getMainPicture() === NULL) {
-                    $trick->setMainPicture($picture);
-                }
-            }
+            // Add pictures forms
+            $this->embedPictureForms($form, $trick);
 
             // if mainpicture is not one of the trick pictures (for example if the picture has just been removed), use the first picture (or null)
             if (!in_array($trick->getMainPicture(), $trick->getPictures()->getValues())) {
@@ -255,5 +199,40 @@ class TrickController extends AbstractController
         return $this->redirect(
             $this->generateUrl('homepage') . '#main-content'
         );
+    }
+
+    /**
+     * Display a form for each picture in trick forms
+     */
+    protected function embedPictureForms($form, Trick $trick): void
+    {
+        $pictureForms = $form->get('pictures');
+
+        // Embed pictures forms
+        foreach ($pictureForms as $pictureForm) {
+
+            /** @var Picture $picture */
+            $picture = $pictureForm->getData();
+
+            /** @var UploadedFile $pictureFile */
+            $pictureFile = $pictureForm->get('filename')->getData();
+
+            // this condition is needed because the 'filename' field is not required
+            // so the image file must be processed only when a file is uploaded
+            if ($pictureFile) {
+                // Upload the new file
+                $pictureFilename = $this->fileUploader->upload($pictureFile);
+                // Remove the old file
+                if ($picture->getFilename()) $this->fileUploader->remove($picture->getFilename());
+                // updates the 'filename' property to store the image file name
+                // instead of its contents
+                $picture->setFilename($pictureFilename);
+            }
+
+            // Use the first uploaded picture as main picture, if none is defined
+            if ($trick->getMainPicture() === NULL) {
+                $trick->setMainPicture($picture);
+            }
+        }
     }
 }
