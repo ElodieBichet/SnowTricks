@@ -58,7 +58,10 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            $this->addFlash('warning', 'Please click on the link in the email that has been sent to you to validate your new account.');
+            $this->addFlash(
+                'warning',
+                'Please click on the link in the email that has been sent to you to validate your new account.'
+            );
 
             return $this->redirect(
                 $this->generateUrl('homepage') . '#main-content'
@@ -74,7 +77,6 @@ class RegistrationController extends AbstractController
      * @Route("/verify/email", name="app_verify_email")
      */
     public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
-
     {
         // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $id = $request->get('id'); // retrieve the user id from the url

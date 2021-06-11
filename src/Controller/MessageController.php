@@ -17,10 +17,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MessageController extends AbstractController
 {
     protected $messageRepository;
+    protected $pagination;
 
-    public function __construct(MessageRepository $messageRepository)
+    public function __construct(MessageRepository $messageRepository, PaginationService $pagination)
     {
         $this->messageRepository = $messageRepository;
+        $this->pagination = $pagination;
     }
 
     /**
@@ -38,13 +40,13 @@ class MessageController extends AbstractController
      * @Route("/{trickId<\d+>}/page/{page<\d+>}", name="message_page", methods={"GET"})
      * @Route("/{trickId<\d+>}/page/{page<\d+>}/{limit}-per-page", name="message_page_with_limit", methods={"GET"})
      */
-    public function renderPaginatedMessages(int $trickId, int $page = 1, int $limit = 10, PaginationService $pagination)
+    public function renderPaginatedMessages(int $trickId, int $page = 1, int $limit = 10)
     {
         $queryBuilder = $this->messageRepository->createQueryBuilder('item')
             ->where("item.trick = $trickId")
             ->orderBy('item.createdAt', 'DESC');
 
-        $options = $pagination->getRenderOptions('messages', $queryBuilder, $limit, $page);
+        $options = $this->pagination->getRenderOptions('messages', $queryBuilder, $limit, $page);
 
         $options['trickId'] = $trickId;
 

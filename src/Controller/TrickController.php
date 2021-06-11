@@ -26,11 +26,13 @@ class TrickController extends AbstractController
 {
     protected $trickRepository;
     protected $fileUploader;
+    protected $pagination;
 
-    public function __construct(TrickRepository $trickRepository, FileUploaderService $fileUploader)
+    public function __construct(TrickRepository $trickRepository, FileUploaderService $fileUploader, PaginationService $pagination)
     {
         $this->trickRepository = $trickRepository;
         $this->fileUploader = $fileUploader;
+        $this->pagination = $pagination;
     }
 
     /**
@@ -48,12 +50,12 @@ class TrickController extends AbstractController
      * @Route("/page/{page<\d+>}", name="trick_page", methods={"GET"})
      * @Route("/page/{page<\d+>}/{limit}-per-page", name="trick_page_with_limit", methods={"GET"})
      */
-    public function renderPaginatedTricks(int $page = 1, int $limit = 10, PaginationService $pagination)
+    public function renderPaginatedTricks(int $page = 1, int $limit = 10)
     {
         $queryBuilder = $this->trickRepository->createQueryBuilder('item')
             ->orderBy('item.updatedAt', 'DESC');
 
-        $options = $pagination->getRenderOptions('tricks', $queryBuilder, $limit, $page);
+        $options = $this->pagination->getRenderOptions('tricks', $queryBuilder, $limit, $page);
 
         return $this->render('trick/list.html.twig', $options);
     }
@@ -141,7 +143,7 @@ class TrickController extends AbstractController
             // Add pictures forms
             $this->embedPictureForms($form, $trick);
 
-            // if mainpicture is not one of the trick pictures (for example if the picture has just been removed), use the first picture (or null)
+            // if mainPicture not one of the current trick pictures, use the first picture instead (or null)
             if (!in_array($trick->getMainPicture(), $trick->getPictures()->getValues())) {
                 $trick->setMainPicture($trick->getPictures()->get(0));
             }
@@ -166,7 +168,7 @@ class TrickController extends AbstractController
      * @Route("/{id<\d+>}/login", name="connect_from_trick", methods={"GET"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to join the discussion")
      */
-    public function request_login(Trick $trick): Response
+    public function requestLogin(Trick $trick): Response
     {
         // redirect to the current trick after login
         return $this->redirectToRoute('trick_show', [
@@ -179,14 +181,13 @@ class TrickController extends AbstractController
      * @Route("/{id}", name="trick_delete", methods={"POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to delete a trick")
      */
-    public function delete(Request $request, Trick $trick, FileUploaderService $fileUploader): Response
+    public function delete(Request $request, Trick $trick): Response
     {
         if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
-
             // Delete picture files on the trick
             $pictures = $trick->getPictures();
             foreach ($pictures as $picture) {
-                $fileUploader->remove($picture->getFilename());
+                $this->fileUploader->remove($picture->getFilename());
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -223,14 +224,16 @@ class TrickController extends AbstractController
                 // Upload the new file
                 $pictureFilename = $this->fileUploader->upload($pictureFile);
                 // Remove the old file
-                if ($picture->getFilename()) $this->fileUploader->remove($picture->getFilename());
+                if ($picture->getFilename()) {
+                    $this->fileUploader->remove($picture->getFilename());
+                }
                 // updates the 'filename' property to store the image file name
                 // instead of its contents
                 $picture->setFilename($pictureFilename);
             }
 
             // Use the first uploaded picture as main picture, if none is defined
-            if ($trick->getMainPicture() === NULL) {
+            if ($trick->getMainPicture() === null) {
                 $trick->setMainPicture($picture);
             }
         }

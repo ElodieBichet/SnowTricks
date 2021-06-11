@@ -40,7 +40,6 @@ class PictureFixtures extends Fixture
         // Create pictures in tricks
         foreach ($allPictures as $fileName) {
             if (is_file($dir . $fileName)) {
-
                 //for ($img = 1; $img < 67; $img++) {
                 $picture = new Picture;
 

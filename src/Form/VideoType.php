@@ -42,7 +42,7 @@ class VideoType extends AbstractType
                 'constraints' => [
                     new Regex([
                         'pattern' => '#(youtu)|(dai\.?ly)|(vimeo)#',
-                        'message' => 'The video URL must match with one of these video platforms: Youtube, Dailymotion, Vimeo'
+                        'message' => 'The video URL must match with Youtube, Dailymotion or Vimeo format'
                     ])
                 ]
             ])

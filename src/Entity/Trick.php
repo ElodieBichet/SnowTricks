@@ -29,7 +29,8 @@ class Trick
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message="You must define a trick name")
-     * @Assert\Length(min=3, max=50, minMessage="The trick name must have at least {{ limit }} characters", maxMessage="The trick name cannot be longer than {{ limit }} characters")
+     * @Assert\Length(min=3, max=50, minMessage="The trick name must have at least {{ limit }} characters",
+     *  maxMessage="The trick name cannot be longer than {{ limit }} characters")
      */
     private $name;
 

@@ -21,7 +21,8 @@ class Video
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="You must define a title")
-     * @Assert\Length(min=3, max=50, minMessage="The video title must have at least {{ limit }} characters", maxMessage="The video title cannot be longer than {{ limit }} characters")
+     * @Assert\Length(min=3, max=50, minMessage="The video title must have at least {{ limit }} characters",
+     *  maxMessage="The video title cannot be longer than {{ limit }} characters")
      */
     private $title;
 

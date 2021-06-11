@@ -23,8 +23,14 @@ class HomeController extends AbstractController
     protected $videoRepository;
     protected $trickRepository;
 
-    public function __construct(TrickRepository $trickRepository, MessageRepository $messageRepository, UserRepository $userRepository, GroupRepository $groupRepository, PictureRepository $pictureRepository, VideoRepository $videoRepository)
-    {
+    public function __construct(
+        TrickRepository $trickRepository,
+        MessageRepository $messageRepository,
+        UserRepository $userRepository,
+        GroupRepository $groupRepository,
+        PictureRepository $pictureRepository,
+        VideoRepository $videoRepository
+    ) {
         $this->trickRepository = $trickRepository;
         $this->messageRepository = $messageRepository;
         $this->userRepository = $userRepository;

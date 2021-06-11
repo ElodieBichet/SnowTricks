@@ -8,7 +8,6 @@ use App\Entity\Group;
 use App\Entity\Trick;
 use App\Entity\Message;
 use Cocur\Slugify\Slugify;
-use App\Service\FileUploaderService;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -18,7 +17,7 @@ class AppFixtures extends Fixture
     protected $slugger;
     protected $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, FileUploaderService $fileUploader)
+    public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->slugger = new Slugify();
         $this->encoder = $encoder;

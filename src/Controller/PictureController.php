@@ -22,10 +22,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PictureController extends AbstractController
 {
     protected $pictureRepository;
+    protected $fileUploader;
 
-    public function __construct(PictureRepository $pictureRepository)
+    public function __construct(PictureRepository $pictureRepository, FileUploaderService $fileUploader)
     {
         $this->pictureRepository = $pictureRepository;
+        $this->fileUploader = $fileUploader;
     }
 
     /**
@@ -43,7 +45,7 @@ class PictureController extends AbstractController
      * @Route("/new", name="picture_new", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to create a picture")
      */
-    public function new(Request $request, EntityManagerInterface $em, FileUploaderService $fileUploader): Response
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $picture = new Picture();
         $form = $this->createForm(PictureType::class, $picture);
@@ -58,7 +60,7 @@ class PictureController extends AbstractController
             // so the image file must be processed only when a file is uploaded
             if ($pictureFile) {
                 // Upload the file
-                $pictureFilename = $fileUploader->upload($pictureFile);
+                $pictureFilename = $this->fileUploader->upload($pictureFile);
                 // updates the 'filename' property to store the image file name
                 // instead of its contents
                 $picture->setFilename($pictureFilename);
@@ -85,7 +87,7 @@ class PictureController extends AbstractController
      * @Route("/{id<\d+>}/edit", name="picture_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to edit a picture")
      */
-    public function edit(Request $request, EntityManagerInterface $em, Picture $picture, FileUploaderService $fileUploader): Response
+    public function edit(Request $request, EntityManagerInterface $em, Picture $picture): Response
     {
         $form = $this->createForm(PictureType::class, $picture);
         $form->handleRequest($request);
@@ -99,9 +101,9 @@ class PictureController extends AbstractController
             // so the image file must be processed only when a file is uploaded
             if ($pictureFile) {
                 // Upload the new file
-                $pictureFilename = $fileUploader->upload($pictureFile);
+                $pictureFilename = $this->fileUploader->upload($pictureFile);
                 // Remove the old file
-                $fileUploader->remove($picture->getFilename());
+                $this->fileUploader->remove($picture->getFilename());
                 // updates the 'filename' property to store the image file name
                 // instead of its contents
                 $picture->setFilename($pictureFilename);
