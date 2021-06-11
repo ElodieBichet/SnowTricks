@@ -16,44 +16,44 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
 
-  protected $trickRepository;
-  protected $messageRepository;
-  protected $userRepository;
-  protected $groupRepository;
-  protected $pictureRepository;
-  protected $videoRepository;
+    protected $messageRepository;
+    protected $userRepository;
+    protected $groupRepository;
+    protected $pictureRepository;
+    protected $videoRepository;
+    protected $trickRepository;
 
-  public function __construct(TrickRepository $trickRepository, MessageRepository $messageRepository, UserRepository $userRepository, GroupRepository $groupRepository, PictureRepository $pictureRepository, VideoRepository $videoRepository)
-  {
-    $this->trickRepository = $trickRepository;
-    $this->messageRepository = $messageRepository;
-    $this->userRepository = $userRepository;
-    $this->groupRepository = $groupRepository;
-    $this->pictureRepository = $pictureRepository;
-    $this->videoRepository = $videoRepository;
-  }
+    public function __construct(TrickRepository $trickRepository, MessageRepository $messageRepository, UserRepository $userRepository, GroupRepository $groupRepository, PictureRepository $pictureRepository, VideoRepository $videoRepository)
+    {
+        $this->trickRepository = $trickRepository;
+        $this->messageRepository = $messageRepository;
+        $this->userRepository = $userRepository;
+        $this->groupRepository = $groupRepository;
+        $this->pictureRepository = $pictureRepository;
+        $this->videoRepository = $videoRepository;
+    }
 
-  /**
-   * @Route("/", name="homepage"))
-   */
-  public function homepage()
-  {
-    return $this->render('home.html.twig');
-  }
+    /**
+     * @Route("/", name="homepage"))
+     */
+    public function homepage()
+    {
+        return $this->render('home.html.twig');
+    }
 
-  /**
-   * @Route("/admin", name="admin_home"))
-   * @IsGranted("ROLE_ADMIN", message="You have to be authenticated as an admin to see this page")
-   */
-  public function admin()
-  {
-    return $this->render('admin/home.html.twig', [
-      'tricks' => $this->trickRepository->findAll(),
-      'messages' => $this->messageRepository->findAll(),
-      'users' => $this->userRepository->findBy(['isVerified' => 1]),
-      'groups' => $this->groupRepository->findAll(),
-      'pictures' => $this->pictureRepository->findAll(),
-      'videos' => $this->videoRepository->findAll()
-    ]);
-  }
+    /**
+     * @Route("/admin", name="admin_home"))
+     * @IsGranted("ROLE_ADMIN", message="You have to be authenticated as an admin to see this page")
+     */
+    public function admin()
+    {
+        return $this->render('admin/home.html.twig', [
+            'tricks' => $this->trickRepository->findAll(),
+            'messages' => $this->messageRepository->findAll(),
+            'users' => $this->userRepository->findBy(['isVerified' => 1]),
+            'groups' => $this->groupRepository->findAll(),
+            'pictures' => $this->pictureRepository->findAll(),
+            'videos' => $this->videoRepository->findAll()
+        ]);
+    }
 }

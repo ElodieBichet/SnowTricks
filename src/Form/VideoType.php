@@ -36,6 +36,7 @@ class VideoType extends AbstractType
                 ]
             ])
             ->add('videoUrl', UrlType::class, [
+                'required' => false,
                 'label' => 'Video URL from Youtube, Dailymotion or Vimeo',
                 'attr' => ['placeholder' => 'https://'],
                 'constraints' => [
