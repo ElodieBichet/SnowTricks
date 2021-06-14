@@ -85,14 +85,17 @@ $ php bin/console doctrine:database:create
 ```
 $ php bin/console doctrine:migrations:migrate
 ```
+Here is the database model:
+  ![DB Model](UML/Data-model.png) 
+  
 3. Install fixtures to have first contents and your super admin account (update the fixtures files before if needed):
 ```
 $ php bin/console doctrine:fixtures:load
 ```
-Your database should be updated with contents.
+Your database should be updated with contents.  
 Images files in scr/DataFixtures/images repertory should be copied with a new name in public/uploads/pictures directory.
 
-__You are ready to use your app!__
-If you login with your admin username and password, you can access all public pages of the app, and manage registered users or any content.
-Loggued in as a registered user (with verified email address), you can manage all tricks and your own messages.
-As an simple visitor, you can just see the content.
+#### __You are ready to use your app!__  
+If you login with your admin username and password, you can access all public pages of the app, and manage registered users or any content.  
+Loggued in as a registered user (with verified email address), you can manage all tricks and your own messages.  
+As an simple visitor, you can just see the content.  
