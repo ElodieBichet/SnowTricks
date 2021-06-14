@@ -29,7 +29,7 @@ class Picture
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="You must write a short description")
-     * @Assert\Length(min=3, max=140, minMessage="The picture description must have at least {{ limit }} characters", 
+     * @Assert\Length(min=3, max=140, minMessage="The picture description must have at least {{ limit }} characters",
      *  maxMessage="The picture description cannot be longer than {{ limit }} characters")
      */
     private $description;

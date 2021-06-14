@@ -28,8 +28,11 @@ class TrickController extends AbstractController
     protected $fileUploader;
     protected $pagination;
 
-    public function __construct(TrickRepository $trickRepository, FileUploaderService $fileUploader, PaginationService $pagination)
-    {
+    public function __construct(
+        TrickRepository $trickRepository,
+        FileUploaderService $fileUploader,
+        PaginationService $pagination
+    ) {
         $this->trickRepository = $trickRepository;
         $this->fileUploader = $fileUploader;
         $this->pagination = $pagination;

@@ -57,8 +57,18 @@ class AppFixtures extends Fixture
             array_push($users, $user);
         }
 
-        // Create groups and fake tricks and messages
-        $groupNames = ['straight air', 'grab', 'spin', 'flips and inverted rotations', 'inverted hand plants', 'slide', 'stall', 'tweaks and variations', 'other'];
+        // Create real groups, fake tricks and fake messages
+        $groupNames = [
+            'straight air',
+            'grab',
+            'spin',
+            'flips and inverted rotations',
+            'inverted hand plants',
+            'slide',
+            'stall',
+            'tweaks and variations',
+            'other'
+        ];
         foreach ($groupNames as $name) {
             $group = new Group;
             $group
