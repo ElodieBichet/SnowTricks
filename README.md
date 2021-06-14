@@ -14,7 +14,6 @@ Work carried out as part of the training course "Application Developer - PHP / S
   * [Configure environment variables](#configure-environment-variables)
   * [Install the project](#install-the-project)
   * [Create the database](#create-the-database)
-3.  __[Usage](#usage)__
 
 ---
 ## PREREQUISITE AND TECHNOLOGIES
@@ -87,7 +86,7 @@ $ php bin/console doctrine:migrations:migrate
 ```
 Here is the database model:
   ![DB Model](UML/Data-model.png) 
-  
+
 3. Install fixtures to have first contents and your super admin account (update the fixtures files before if needed):
 ```
 $ php bin/console doctrine:fixtures:load
