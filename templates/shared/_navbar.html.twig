@@ -12,15 +12,13 @@
 	</button>
 
 	<div class="collapse navbar-collapse" id="mainNavbar">
-		<ul class="navbar-nav ms-auto">
+		<ul class="navbar-nav ms-3 ms-lg-auto">
 			<li class="nav-item">
-				<a class="nav-link active" href="{{ path('homepage') }}">Home
-					<span class="sr-only">(current)</span>
-				</a>
+				<a class="nav-link {{ app.request.get('_route') starts with 'homepage' ? 'active' }}" href="{{ path('homepage') }}">Home</a>
 			</li>
 			<li class="nav-item">
 				<div class="d-flex">
-					<a class="nav-link" href="{{ path('homepage') }}#main-content">Tricks</a>
+					<a class="nav-link {{ app.request.get('_route') starts with 'trick' ? 'active' }}" href="{{ path('homepage') }}#main-content">Tricks</a>
 					{% if app.user %}
 						<a class="nav-link ms-2 ms-lg-0" href="{{ path('trick_new') }}">
 							<span class="badge rounded-pill bg-secondary py-1 px-2">
@@ -37,10 +35,10 @@
 				</li>
 			{% else %}
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('security_login') }}">Sign in</a>
+					<a class="nav-link {{ app.request.get('_route') starts with 'security' ? 'active' }}" href="{{ path('security_login') }}">Sign in</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_register') }}">Sign up</a>
+					<a class="nav-link {{ app.request.get('_route') == 'app_register' ? 'active' }}" href="{{ path('app_register') }}">Sign up</a>
 				</li>
 			{% endif %}
 		</ul>
