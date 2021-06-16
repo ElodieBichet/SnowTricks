@@ -187,11 +187,6 @@ class TrickController extends AbstractController
     public function delete(Request $request, Trick $trick): Response
     {
         if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
-            // Delete picture files on the trick
-            $pictures = $trick->getPictures();
-            foreach ($pictures as $picture) {
-                $this->fileUploader->remove($picture->getFilename());
-            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trick);

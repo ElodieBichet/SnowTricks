@@ -223,9 +223,6 @@ class Trick
             if ($picture->getTrick() === $this) {
                 $picture->setTrick(null);
             }
-            if (file_exists('./uploads/pictures/' . $picture->getFilename())) {
-                unlink('./uploads/pictures/' . $picture->getFilename());
-            }
         }
 
         return $this;
