@@ -9,6 +9,13 @@ use Twig\Extension\AbstractExtension;
 class TwigAvatarExtension extends AbstractExtension
 {
 
+    protected $bgAllowedColors;
+
+    public function __construct(array $bgAllowedColors)
+    {
+        $this->bgAllowedColors = $bgAllowedColors;
+    }
+
     public function getFilters()
     {
         return [
@@ -22,12 +29,9 @@ class TwigAvatarExtension extends AbstractExtension
     public function avatarFilter(User $user, int $size, array $attr = []): string
     {
         // List all allowed background colors for a generated avatar
-        $bgColors = [
-            '012A4A/fff', '013A63/fff', '01497C/fff', '2A6F97/fff',
-            '2C7DA0/fff', '468FAF/fff', '61A5C2/fff', '89C2D9', 'A9D6E5'
-        ];
+        $bgAllowedColors = $this->bgAllowedColors;
         // Use user id to define a unic color by user
-        $bgAvatar = $bgColors[$user->getId() % count($bgColors)];
+        $bgAvatar = $bgAllowedColors[$user->getId() % count($bgAllowedColors)];
 
         // Set the src of the image
         $avatarUrl =

@@ -8,27 +8,27 @@
 	<h1 class="mx-5 my-3">Manage your content</h1>
 
 	<div class="row my-4 mx-5 justify-content-around">
-		<a class="btn btn-primary col-md-2 col-6" href="{{ path('trick_admin') }}">
+		<a class="btn btn-primary col-md-2 col-6 {{ app.request.get('_route') == 'trick_admin' ? 'active' }}" href="{{ path('trick_admin') }}">
 			<i class="far fa-clipboard"></i>
 			<span class="d-none d-md-inline">Manage
 			</span>tricks</a>
-		<a class="btn btn-primary col-md-2 col-6" href="{{ path('message_admin') }}">
+		<a class="btn btn-primary col-md-2 col-6 {{ app.request.get('_route') == 'message_admin' ? 'active' }}" href="{{ path('message_admin') }}">
 			<i class="far fa-comments"></i>
 			<span class="d-none d-md-inline">Manage
 			</span>messages</a>
-		<a class="btn btn-primary col-md-2 col-6" href="{{ path('user_admin') }}">
+		<a class="btn btn-primary col-md-2 col-6 {{ app.request.get('_route') == 'user_admin' ? 'active' }}" href="{{ path('user_admin') }}">
 			<i class="far fa-user"></i>
 			<span class="d-none d-md-inline">Manage
 			</span>users</a>
-		<a class="btn btn-primary col-md-2 col-6" href="{{ path('group_admin') }}">
+		<a class="btn btn-primary col-md-2 col-6 {{ app.request.get('_route') == 'group_admin' ? 'active' }}" href="{{ path('group_admin') }}">
 			<i class="far fa-object-group"></i>
 			<span class="d-none d-md-inline">Manage
 			</span>groups</a>
-		<a class="btn btn-primary col-md-2 col-6" href="{{ path('picture_admin') }}">
+		<a class="btn btn-primary col-md-2 col-6 {{ app.request.get('_route') == 'picture_admin' ? 'active' }}" href="{{ path('picture_admin') }}">
 			<i class="far fa-image"></i>
 			<span class="d-none d-md-inline">Manage
 			</span>pictures</a>
-		<a class="btn btn-primary col-md-2 col-6" href="{{ path('video_admin') }}">
+		<a class="btn btn-primary col-md-2 col-6 {{ app.request.get('_route') == 'video_admin' ? 'active' }}" href="{{ path('video_admin') }}">
 			<i class="fas fa-film"></i>
 			<span class="d-none d-md-inline">Manage
 			</span>videos</a>

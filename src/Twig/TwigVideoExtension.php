@@ -7,6 +7,12 @@ use Twig\TwigFilter;
 
 class TwigVideoExtension extends AbstractExtension
 {
+    protected $embedUrlTemplates;
+
+    public function __construct(array $embedUrlTemplates)
+    {
+        $this->embedUrlTemplates = $embedUrlTemplates;
+    }
 
     public function getFilters()
     {
@@ -19,18 +25,12 @@ class TwigVideoExtension extends AbstractExtension
     {
         $embedUrl = $url;
         $videoId = substr($url, strrpos($url, '/') + 1);
+        $embedUrlTemplates = $this->embedUrlTemplates;
 
-        // if Youtube
-        if (stripos($url, 'youtu')) {
-            $embedUrl = 'https://www.youtube.com/embed/' . $videoId . '?controls=2';
-        }
-        // if Dailymotion
-        if (stripos($url, 'dai.ly') || stripos($url, 'daily')) {
-            $embedUrl = 'https://www.dailymotion.com/embed/video/' . $videoId;
-        }
-        // if vimeo
-        if (stripos($url, 'vimeo')) {
-            $embedUrl = 'https://player.vimeo.com/video/' . $videoId;
+        foreach ($embedUrlTemplates as $key => $value) {
+            if (stripos($url, $key)) {
+                $embedUrl = sprintf($value, $videoId);
+            }
         }
 
         return $embedUrl;

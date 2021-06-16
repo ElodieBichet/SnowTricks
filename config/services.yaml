@@ -39,6 +39,23 @@ services:
     
     App\Twig\TwigVideoExtension:
         tags: ['twig.extension']
+        arguments:
+            $embedUrlTemplates: 
+                youtu:  https://www.youtube.com/embed/%s?controls=2
+                dai.ly: https://www.dailymotion.com/embed/video/%s
+                daily:  https://www.dailymotion.com/embed/video/%s
+                vimeo:  https://player.vimeo.com/video/%s
     
     App\Twig\TwigAvatarExtension:
         tags: ['twig.extension']
+        arguments:
+            $bgAllowedColors:
+                - 012A4A/fff
+                - 013A63/fff
+                - 01497C/fff
+                - 2A6F97/fff
+                - 2C7DA0/fff
+                - 468FAF/fff
+                - 61A5C2/fff
+                - 89C2D9
+                - A9D6E5
