@@ -74,8 +74,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setCreatedAt(new \DateTime());
-            $trick->setUpdatedAt($trick->getCreatedAt());
             $trick->setSlug((new Slugify())->slugify($trick->getName()));
 
             // Add pictures forms
@@ -109,7 +107,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($currentUser && $form->isSubmitted() && $form->isValid()) {
-            $message->setCreatedAt(new \DateTime());
             $message->setTrick($trick);
             $message->setAuthor($currentUser);
 
@@ -140,7 +137,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setUpdatedAt(new \DateTime());
             $trick->setSlug((new Slugify())->slugify($trick->getName()));
 
             // Add pictures forms
