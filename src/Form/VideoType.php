@@ -19,21 +19,8 @@ class VideoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, [
-                'required' => false,
-                'empty_data' => '',
-                'attr' => ['placeholder' => 'Video title'],
-                'constraints' => [
-                    new Length([
-                        'min' => 3,
-                        'max' => 50,
-                        'minMessage' => "The video title must have at least {{ limit }} characters",
-                        'maxMessage' => "The video title cannot be longer than {{ limit }} characters"
-                    ]),
-                    new NotBlank([
-                        'message' => "You must define a title"
-                    ])
-                ]
+            ->add('title', MediaTitleType::class, [
+                'data_class' => Video::class,
             ])
             ->add('videoUrl', UrlType::class, [
                 'required' => false,
