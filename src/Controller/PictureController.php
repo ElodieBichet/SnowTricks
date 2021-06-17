@@ -52,14 +52,7 @@ class PictureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $pictureFile */
-            $pictureFile = $form->get('filename')->getData();
-
-            // this condition is needed because the 'filename' field is not required
-            // so the image file must be processed only when a file is uploaded
-            if ($pictureFile) {
-                $this->dispatcher->dispatch(new FileUpdateEvent($picture, $pictureFile), 'file.new');
-            }
+            $this->processForm($form, $picture);
 
             $em->persist($picture);
             $em->flush();
@@ -89,14 +82,7 @@ class PictureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $pictureFile */
-            $pictureFile = $form->get('filename')->getData();
-
-            // this condition is needed because the 'filename' field is not required
-            // so the image file must be processed only when a file is uploaded
-            if ($pictureFile) {
-                $this->dispatcher->dispatch(new FileUpdateEvent($picture, $pictureFile), 'file.update');
-            }
+            $this->processForm($form, $picture);
 
             $em->persist($picture);
             $em->flush();
@@ -113,6 +99,19 @@ class PictureController extends AbstractController
             'picture' => $picture,
             'form' => $form->createView()
         ]);
+    }
+
+    protected function processForm($form, Picture $picture)
+    {
+        /** @var UploadedFile $pictureFile */
+        $pictureFile = $form->get('filename')->getData();
+
+        // this condition is needed because the 'filename' field is not required
+        // so the image file must be processed only when a file is uploaded
+        if ($pictureFile) {
+            $event = ($picture->getFilename()) ? 'file.update' : 'file.new';
+            $this->dispatcher->dispatch(new FileUpdateEvent($picture, $pictureFile), $event);
+        }
     }
 
     // /**
