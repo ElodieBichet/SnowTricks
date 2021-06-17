@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class TrickFixtures extends Fixture implements DependentFixtureInterface
+class TrickFixtures extends Fixture
 {
     protected $slugger;
 
@@ -19,11 +19,8 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $this->slugger = new Slugify();
     }
 
-    public function load(ObjectManager $manager)
+    protected function getGroups(): array
     {
-        $faker = Factory::create('en_US');
-
-        // Create real groups, fake tricks and fake messages
         $groupNames = [
             'straight air',
             'grab',
@@ -35,14 +32,32 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
             'tweaks and variations',
             'other'
         ];
+
+        $groups = [];
+
         foreach ($groupNames as $name) {
             $group = new Group;
             $group
                 ->setName(ucfirst($name))
                 ->setSlug($this->slugger->slugify($group->getName()));
 
+            $groups[] = $group;
+        }
+
+        return $groups;
+    }
+
+    public function load(ObjectManager $manager)
+    {
+        $faker = Factory::create('en_US');
+
+        // Create real groups
+        $groups = $this->getGroups();
+
+        foreach ($groups as $group) {
             $manager->persist($group);
 
+            // Create fake tricks
             for ($t = 0; $t < mt_rand(mt_rand(0, 2), 7); $t++) {
                 $trick = new Trick;
                 $trick
@@ -59,15 +74,8 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
 
                 $manager->persist($trick);
             }
-        };
+        }
 
         $manager->flush();
-    }
-
-    public function getDependencies()
-    {
-        return [
-            UserFixtures::class,
-        ];
     }
 }
