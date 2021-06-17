@@ -3,17 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Picture;
-use App\Entity\Trick;
 use App\Form\PictureType;
-use App\Service\FileUploaderService;
+use App\Event\FileUpdateEvent;
 use App\Repository\PictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -22,12 +21,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PictureController extends AbstractController
 {
     protected $pictureRepository;
-    protected $fileUploader;
+    protected $dispatcher;
 
-    public function __construct(PictureRepository $pictureRepository, FileUploaderService $fileUploader)
+    public function __construct(PictureRepository $pictureRepository, EventDispatcherInterface $dispatcher)
     {
         $this->pictureRepository = $pictureRepository;
-        $this->fileUploader = $fileUploader;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -59,11 +58,7 @@ class PictureController extends AbstractController
             // this condition is needed because the 'filename' field is not required
             // so the image file must be processed only when a file is uploaded
             if ($pictureFile) {
-                // Upload the file
-                $pictureFilename = $this->fileUploader->upload($pictureFile);
-                // updates the 'filename' property to store the image file name
-                // instead of its contents
-                $picture->setFilename($pictureFilename);
+                $this->dispatcher->dispatch(new FileUpdateEvent($picture, $pictureFile), 'file.new');
             }
 
             $em->persist($picture);
@@ -100,13 +95,7 @@ class PictureController extends AbstractController
             // this condition is needed because the 'filename' field is not required
             // so the image file must be processed only when a file is uploaded
             if ($pictureFile) {
-                // Upload the new file
-                $pictureFilename = $this->fileUploader->upload($pictureFile);
-                // Remove the old file
-                $this->fileUploader->remove($picture->getFilename());
-                // updates the 'filename' property to store the image file name
-                // instead of its contents
-                $picture->setFilename($pictureFilename);
+                $this->dispatcher->dispatch(new FileUpdateEvent($picture, $pictureFile), 'file.update');
             }
 
             $em->persist($picture);

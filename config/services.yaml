@@ -33,7 +33,7 @@ services:
     # please note that last definitions always *replace* previous ones
     Cocur\Slugify\Slugify: ~
 
-    App\Service\FileUploaderService:
+    App\Service\FileManagerService:
         arguments:
             $targetDirectory: '%pictures_directory%'
     

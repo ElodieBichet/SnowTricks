@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class FileUploaderService
+class FileManagerService
 {
     private $targetDirectory;
     private $slugger;

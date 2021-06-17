@@ -6,7 +6,7 @@ use Faker\Factory;
 use App\Entity\Picture;
 use App\Repository\TrickRepository;
 use Cocur\Slugify\Slugify;
-use App\Service\FileUploaderService;
+use App\Service\FileManagerService;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\HttpFoundation\File\File;
@@ -14,13 +14,13 @@ use Symfony\Component\HttpFoundation\File\File;
 class PictureFixtures extends Fixture
 {
     protected $slugger;
-    protected $fileUploader;
+    protected $fileManager;
     protected $trickRepository;
 
-    public function __construct(FileUploaderService $fileUploader, TrickRepository $trickRepository)
+    public function __construct(FileManagerService $fileManager, TrickRepository $trickRepository)
     {
         $this->slugger = new Slugify();
-        $this->fileUploader = $fileUploader;
+        $this->fileManager = $fileManager;
         $this->trickRepository = $trickRepository;
     }
 
@@ -31,7 +31,7 @@ class PictureFixtures extends Fixture
         $tricks = $this->trickRepository->findAll();
 
         // Empty uploads/pictures directory
-        array_map('unlink', glob($this->fileUploader->getTargetDirectory() . '/*'));
+        array_map('unlink', glob($this->fileManager->getTargetDirectory() . '/*'));
 
         // Get starting pictures
         $dir = __DIR__ . '/images/';
@@ -49,7 +49,7 @@ class PictureFixtures extends Fixture
                 $originalFilename = pathinfo($file->getFilename(), PATHINFO_FILENAME);
                 $safeFilename = $this->slugger->slugify($originalFilename);
                 $pictureFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
-                $newFile = $file->move($this->fileUploader->getTargetDirectory(), $pictureFilename);
+                $newFile = $file->move($this->fileManager->getTargetDirectory(), $pictureFilename);
 
                 // Copy file in the orginal directory in case we need to reload fixtures
                 copy($newFile, $dir . $originalFilename);

@@ -8,15 +8,16 @@ use App\Entity\Picture;
 use App\Form\TrickType;
 use App\Form\MessageType;
 use Cocur\Slugify\Slugify;
+use App\Event\FileUpdateEvent;
 use App\Service\PaginationService;
 use App\Repository\TrickRepository;
-use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -25,17 +26,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TrickController extends AbstractController
 {
     protected $trickRepository;
-    protected $fileUploader;
     protected $pagination;
+    protected $dispatcher;
 
     public function __construct(
         TrickRepository $trickRepository,
-        FileUploaderService $fileUploader,
-        PaginationService $pagination
+        PaginationService $pagination,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->trickRepository = $trickRepository;
-        $this->fileUploader = $fileUploader;
         $this->pagination = $pagination;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -215,15 +216,8 @@ class TrickController extends AbstractController
             // this condition is needed because the 'filename' field is not required
             // so the image file must be processed only when a file is uploaded
             if ($pictureFile) {
-                // Upload the new file
-                $pictureFilename = $this->fileUploader->upload($pictureFile);
-                // Remove the old file
-                if ($picture->getFilename()) {
-                    $this->fileUploader->remove($picture->getFilename());
-                }
-                // updates the 'filename' property to store the image file name
-                // instead of its contents
-                $picture->setFilename($pictureFilename);
+                $event = ($picture->getFilename()) ? 'file.update' : 'file.new';
+                $this->dispatcher->dispatch(new FileUpdateEvent($picture, $pictureFile), $event);
             }
 
             // Use the first uploaded picture as main picture, if none is defined

@@ -3,19 +3,19 @@
 namespace App\Doctrine\Listener;
 
 use App\Entity\Picture;
-use App\Service\FileUploaderService;
+use App\Service\FileManagerService;
 
 class PictureRemoveFileListener
 {
-    protected $fileUploader;
+    protected $fileManager;
 
-    public function __construct(FileUploaderService $fileUploader)
+    public function __construct(FileManagerService $fileManager)
     {
-        $this->fileUploader = $fileUploader;
+        $this->fileManager = $fileManager;
     }
 
     public function postRemove(Picture $picture)
     {
-        $this->fileUploader->remove($picture->getFilename());
+        $this->fileManager->remove($picture->getFilename());
     }
 }
