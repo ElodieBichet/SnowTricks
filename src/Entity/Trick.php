@@ -101,6 +101,10 @@ class Trick
             $this->createdAt = new \DateTime();
             $this->updatedAt = $this->createdAt;
         }
+        // if mainPicture not one of the current trick pictures, use the first picture instead (or null)
+        if (!in_array($this->mainPicture, $this->pictures->getValues())) {
+            $this->setMainPicture($this->pictures->get(0));
+        }
     }
 
     /**
@@ -109,6 +113,10 @@ class Trick
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime();
+        // if mainPicture not one of the current trick pictures, use the first picture instead (or null)
+        if (!in_array($this->mainPicture, $this->pictures->getValues())) {
+            $this->setMainPicture($this->pictures->get(0));
+        }
     }
 
     public function getId(): ?int

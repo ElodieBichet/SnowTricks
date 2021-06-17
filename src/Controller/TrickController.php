@@ -143,11 +143,6 @@ class TrickController extends AbstractController
             // Add pictures forms
             $this->embedPictureForms($form, $trick);
 
-            // if mainPicture not one of the current trick pictures, use the first picture instead (or null)
-            if (!in_array($trick->getMainPicture(), $trick->getPictures()->getValues())) {
-                $trick->setMainPicture($trick->getPictures()->get(0));
-            }
-
             $em->flush();
 
             $this->addFlash('success', 'The trick has been successfully updated.');
@@ -217,11 +212,6 @@ class TrickController extends AbstractController
             if ($pictureFile) {
                 $event = ($picture->getFilename()) ? 'file.update' : 'file.new';
                 $this->dispatcher->dispatch(new FileUpdateEvent($picture, $pictureFile), $event);
-            }
-
-            // Use the first uploaded picture as main picture, if none is defined
-            if ($trick->getMainPicture() === null) {
-                $trick->setMainPicture($picture);
             }
         }
     }
