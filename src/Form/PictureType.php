@@ -10,7 +10,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -21,7 +20,6 @@ class PictureType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'required' => false,
                 'empty_data' => '',
                 'attr' => ['placeholder' => 'Image title'],
                 'constraints' => [
@@ -37,7 +35,7 @@ class PictureType extends AbstractType
                 ]
             ])
             ->add('description', TextType::class, [
-                'required' => false,
+                'empty_data' => '',
                 'attr' => ['placeholder' => 'Image short description'],
                 'constraints' => [
                     new Length([
@@ -57,7 +55,7 @@ class PictureType extends AbstractType
                 'mapped' => false,
                 // make it optional so you don't have to re-upload the file
                 // every time you edit the Picture details
-                'required' => false,
+                // 'required' => false,
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
@@ -73,6 +71,7 @@ class PictureType extends AbstractType
                 ],
             ])
             ->add('trick', EntityType::class, [
+                'required' => true,
                 'placeholder' => '-- Choose a trick --',
                 'class' => Trick::class,
                 'choice_label' => function (Trick $trick) {
@@ -85,6 +84,7 @@ class PictureType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Picture::class,
+            'required' => false
         ]);
     }
 }

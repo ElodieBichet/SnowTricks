@@ -20,7 +20,6 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'required' => false,
                 'empty_data' => '',
                 'attr' => ['placeholder' => 'Video title'],
                 'constraints' => [
@@ -36,7 +35,6 @@ class VideoType extends AbstractType
                 ]
             ])
             ->add('videoUrl', UrlType::class, [
-                'required' => false,
                 'label' => 'Video URL from Youtube, Dailymotion or Vimeo',
                 'attr' => ['placeholder' => 'https://'],
                 'constraints' => [
@@ -47,6 +45,7 @@ class VideoType extends AbstractType
                 ]
             ])
             ->add('trick', EntityType::class, [
+                'required' => true,
                 'placeholder' => '-- Choose a trick --',
                 'class' => Trick::class,
                 'choice_label' => function (Trick $trick) {
@@ -59,6 +58,7 @@ class VideoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Video::class,
+            'required' => false
         ]);
     }
 }
