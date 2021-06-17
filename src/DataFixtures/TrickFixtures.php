@@ -62,7 +62,6 @@ class TrickFixtures extends Fixture
                 $trick = new Trick;
                 $trick
                     ->setName(ucfirst($faker->words(mt_rand(2, 4), true)))
-                    ->setSlug($this->slugger->slugify($trick->getName()))
                     ->setDescription($faker->paragraphs(mt_rand(1, 3), true))
                     ->setTrickGroup($group)
                     ->setCreatedAt($faker->dateTimeBetween('-2 weeks'))

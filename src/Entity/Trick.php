@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
-use App\Service\FileManagerService;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -101,6 +101,9 @@ class Trick
             $this->createdAt = new \DateTime();
             $this->updatedAt = $this->createdAt;
         }
+        if (empty($this->slug)) {
+            $this->slug = (new Slugify())->slugify($this->name);
+        }
         // if mainPicture not one of the current trick pictures, use the first picture instead (or null)
         if (!in_array($this->mainPicture, $this->pictures->getValues())) {
             $this->setMainPicture($this->pictures->get(0));
@@ -117,6 +120,7 @@ class Trick
         if (!in_array($this->mainPicture, $this->pictures->getValues())) {
             $this->setMainPicture($this->pictures->get(0));
         }
+        $this->slug = (new Slugify())->slugify($this->name);
     }
 
     public function getId(): ?int

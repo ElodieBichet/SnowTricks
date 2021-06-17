@@ -7,7 +7,6 @@ use App\Entity\Message;
 use App\Entity\Picture;
 use App\Form\TrickType;
 use App\Form\MessageType;
-use Cocur\Slugify\Slugify;
 use App\Event\FileUpdateEvent;
 use App\Service\PaginationService;
 use App\Repository\TrickRepository;
@@ -75,8 +74,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setSlug((new Slugify())->slugify($trick->getName()));
-
             // Add pictures forms
             $this->embedPictureForms($form, $trick);
 
@@ -138,8 +135,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setSlug((new Slugify())->slugify($trick->getName()));
-
             // Add pictures forms
             $this->embedPictureForms($form, $trick);
 
@@ -200,7 +195,6 @@ class TrickController extends AbstractController
 
         // Embed pictures forms
         foreach ($pictureForms as $pictureForm) {
-
             /** @var Picture $picture */
             $picture = $pictureForm->getData();
 
