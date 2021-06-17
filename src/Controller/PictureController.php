@@ -22,11 +22,16 @@ class PictureController extends AbstractController
 {
     protected $pictureRepository;
     protected $dispatcher;
+    protected $entityManager;
 
-    public function __construct(PictureRepository $pictureRepository, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        PictureRepository $pictureRepository,
+        EventDispatcherInterface $dispatcher,
+        EntityManagerInterface $entityManager
+    ) {
         $this->pictureRepository = $pictureRepository;
         $this->dispatcher = $dispatcher;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -44,18 +49,14 @@ class PictureController extends AbstractController
      * @Route("/new", name="picture_new", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to create a picture")
      */
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request): Response
     {
         $picture = new Picture();
         $form = $this->createForm(PictureType::class, $picture);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->processForm($form, $picture);
-
-            $em->persist($picture);
-            $em->flush();
 
             $this->addFlash('success', 'The picture has been successfully added.');
 
@@ -75,17 +76,13 @@ class PictureController extends AbstractController
      * @Route("/{id<\d+>}/edit", name="picture_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", message="You have to be authenticated to edit a picture")
      */
-    public function edit(Request $request, EntityManagerInterface $em, Picture $picture): Response
+    public function edit(Request $request, Picture $picture): Response
     {
         $form = $this->createForm(PictureType::class, $picture);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->processForm($form, $picture);
-
-            $em->persist($picture);
-            $em->flush();
 
             $this->addFlash('success', 'The picture has been successfully updated.');
 
@@ -112,27 +109,8 @@ class PictureController extends AbstractController
             $event = ($picture->getFilename()) ? 'file.update' : 'file.new';
             $this->dispatcher->dispatch(new FileUpdateEvent($picture, $pictureFile), $event);
         }
+
+        $this->entityManager->persist($picture);
+        $this->entityManager->flush();
     }
-
-    // /**
-    //  * @Route("/{id}", name="picture_delete", methods={"POST"})
-    //  * @IsGranted("ROLE_USER", message="You have to be authenticated to delete a picture")
-    //  */
-    // public function delete(Request $request, Picture $picture): ?Response
-    // {
-    //     $trick = $picture->getTrick();
-
-    //     if ($this->isCsrfTokenValid('delete' . $picture->getId(), $request->request->get('_token'))) {
-    //         $entityManager = $this->getDoctrine()->getManager();
-    //         $entityManager->remove($picture);
-    //         $entityManager->flush();
-
-    //         $this->addFlash('success', 'The picture has been successfully removed.');
-    //     }
-
-    //     return $this->redirectToRoute('trick_show', [
-    //         'group_slug' => $trick->getTrickGroup()->getSlug(),
-    //         'slug' => $trick->getSlug()
-    //     ]);
-    // }
 }
