@@ -7,8 +7,9 @@ use App\Entity\Video;
 use App\Repository\TrickRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class VideoFixtures extends Fixture
+class VideoFixtures extends Fixture implements DependentFixtureInterface
 {
     protected $trickRepository;
 
@@ -19,7 +20,7 @@ class VideoFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create();
+        $faker = Factory::create('en_US');
 
         $tricks = $this->trickRepository->findAll();
 
@@ -52,5 +53,12 @@ class VideoFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            TrickFixtures::class,
+        ];
     }
 }

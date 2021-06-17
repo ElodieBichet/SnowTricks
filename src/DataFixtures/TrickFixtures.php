@@ -3,59 +3,25 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
-use App\Entity\User;
 use App\Entity\Group;
 use App\Entity\Trick;
-use App\Entity\Message;
 use Cocur\Slugify\Slugify;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class AppFixtures extends Fixture
+class TrickFixtures extends Fixture implements DependentFixtureInterface
 {
     protected $slugger;
-    protected $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct()
     {
         $this->slugger = new Slugify();
-        $this->encoder = $encoder;
     }
 
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('en_US');
-
-        // Create admin user
-        $admin = new User;
-
-        $hash = $this->encoder->encodePassword($admin, $_ENV['SUPER_ADMIN_PASSWORD']);
-
-        $users = [];
-
-        $admin->setEmail($_ENV['SUPER_ADMIN_EMAIL'])
-            ->setPassword($hash)
-            ->setFullname("Admin")
-            ->setRoles(['ROLE_ADMIN'])
-            ->setIsVerified(1);
-
-        $manager->persist($admin);
-
-        array_push($users, $admin);
-
-        // Create fake users
-        for ($u = 0; $u < 9; $u++) {
-            $user = new User();
-            $hash = $this->encoder->encodePassword($user, "password");
-            $user->setEmail("user$u@email.com")
-                ->setFullname($faker->name())
-                ->setPassword($hash)
-                ->setIsVerified(mt_rand(0, 1));
-
-            $manager->persist($user);
-            array_push($users, $user);
-        }
 
         // Create real groups, fake tricks and fake messages
         $groupNames = [
@@ -92,22 +58,16 @@ class AppFixtures extends Fixture
                 }
 
                 $manager->persist($trick);
-
-                // fake message
-                for ($m = 0; $m < mt_rand(mt_rand(0, 2), 15); $m++) {
-                    $message = new Message;
-                    $author = $users[array_rand($users)];
-                    $message
-                        ->setAuthor($author)
-                        ->setTrick($trick)
-                        ->setContent($faker->paragraph(mt_rand(1, 4)))
-                        ->setCreatedAt($faker->dateTimeBetween($trick->getCreatedAt()));
-
-                    $manager->persist($message);
-                }
             }
         };
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            UserFixtures::class,
+        ];
     }
 }

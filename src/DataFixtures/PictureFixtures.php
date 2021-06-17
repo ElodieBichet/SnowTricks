@@ -4,14 +4,15 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Picture;
-use App\Repository\TrickRepository;
 use Cocur\Slugify\Slugify;
+use App\Repository\TrickRepository;
 use App\Service\FileManagerService;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class PictureFixtures extends Fixture
+class PictureFixtures extends Fixture implements DependentFixtureInterface
 {
     protected $slugger;
     protected $fileManager;
@@ -75,5 +76,12 @@ class PictureFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            TrickFixtures::class,
+        ];
     }
 }
