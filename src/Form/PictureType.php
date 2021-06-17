@@ -20,8 +20,21 @@ class PictureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', MediaTitleType::class, [
-                'data_class' => Picture::class,
+            ->add('title', TextType::class, [
+                'required' => false,
+                'empty_data' => '',
+                'attr' => ['placeholder' => 'Image title'],
+                'constraints' => [
+                    new Length([
+                        'min' => 3,
+                        'max' => 50,
+                        'minMessage' => "The picture title must have at least {{ limit }} characters",
+                        'maxMessage' => "The picture title cannot be longer than {{ limit }} characters"
+                    ]),
+                    new NotBlank([
+                        'message' => "You must define a title"
+                    ])
+                ]
             ])
             ->add('description', TextType::class, [
                 'required' => false,
