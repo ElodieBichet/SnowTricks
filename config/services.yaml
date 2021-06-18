@@ -50,13 +50,13 @@ services:
         tags: ['twig.extension']
         arguments:
             $bgAllowedColors:
-                - 012A4A/fff
-                - 013A63/fff
-                - 01497C/fff
-                - 2A6F97/fff
-                - 2C7DA0/fff
-                - 468FAF/fff
-                - 61A5C2/fff
+                - 012A4A%2Ffff
+                - 013A63%2Ffff
+                - 01497C%2Ffff
+                - 2A6F97%2Ffff
+                - 2C7DA0%2Ffff
+                - 468FAF%2Ffff
+                - 61A5C2%2Ffff
                 - 89C2D9
                 - A9D6E5
     

@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\User;
+use Symfony\Component\Validator\Constraints\Length;
 use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
 
@@ -32,12 +33,14 @@ class TwigAvatarExtension extends AbstractExtension
         $bgAllowedColors = $this->bgAllowedColors;
         // Use user id to define a unic color by user
         $bgAvatar = $bgAllowedColors[$user->getId() % count($bgAllowedColors)];
+        // Delete dots and replace spaces with plus signs in user's fullname
+        $username = str_replace('.', '', str_replace(' ', '%2b', trim($user->getFullname())));
 
         // Set the src of the image
         $avatarUrl =
             'https://www.gravatar.com/avatar/' . md5(strtolower(trim($user->getEmail())))
-            . '?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/'
-            . trim($user->getFullname()) . '/' . $size . '/' . $bgAvatar
+            . '?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F'
+            . $username . '%2F' . $size . '%2F' . $bgAvatar
             . '&s=' . $size;
 
         // Attributes for <img>
